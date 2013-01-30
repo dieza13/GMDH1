@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/icons/Arrow-right-icon.png</file>
+        <file>resources/icons/Arrow-left-icon.png</file>
+    </qresource>
+</RCC>
