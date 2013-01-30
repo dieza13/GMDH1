@@ -1,5 +1,5 @@
 #include "body.h"
-
+//визуализация
 Body::Body()
 {
     QGraphicsTextItem *text = new QGraphicsTextItem(this);
