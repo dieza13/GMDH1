@@ -82,43 +82,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-//    QLabel * label1 = new QLabel();
-//    label1->setFixedHeight(41);
-//    label1->setFixedWidth(41);
-//    QPixmap pm(QSize(label1->width(),label1->height()));
-//    pm.fill(label1,0,0);
-//    QPainter painter(&pm);
 
-//    painter.fillRect(painter.viewport(),QColor(255,255,255));
-//    painter.setPen(QColor(0,0,0));
-//    painter.drawEllipse(0,0,40, 40);
-//    QString neironNum("2");
-
-////    painter.drawText(label1->width() / 2 , label1->height() / 2 , neironNum);
-//    label1->setPixmap(pm);
-//    label1->setParent(ui->centralWidget);
-//    label1->show();
-//    label1->move(100,100);
-//    label1->setText("2");
-//    QWidget * widg = new QWidget;
-//    QHBoxLayout *layout = new QHBoxLayout;
-//    QLabel *label = new QLabel("hello");
-//    layout->addWidget(label);
-
-//    widg->setLayout(layout);
-//    widg->setParent(ui->graphicsView);
-//    widg->show();
-
-//    widg.setFixedHeight(41);
-//    widg.setFixedWidth(41);
-//    QPixmap pm(QSize(widg().width(), widg().height()));
-//    pm.fill(widg,0,0);
-
-//    QGraphicsItem * item = itemAt(mouseEvent->scenePos());
-//    QGraphicsTextItem *ptext = new QGraphicsTextItem(item, this);
-//    ptext->setPlainText("Hi");
-//    ptext->setData(0, "Text");
-//    ptext->setTextInteractionFlags(Qt::TextEditable);
 
    QMap<QString, int> map;
    QString a("a");
@@ -158,25 +122,12 @@ void MainWindow::on_pushButton_6_clicked()
 
         item->text().toDouble(&isNumeric);
         if (!isNumeric) {
-            ui->textBrowser->setText("Введено не чиловое значение. проверьте данные");
+            ui->textBrowser->setText("Введено не числовое значение. проверьте данные");
             break;
         }
-//        std::cout << isNumeric << std::endl;
     }
 
     QMap<int, double> example;
-//    int i = 0;
-//    if (isNumeric) {
-//         QMapIterator<QString, int> iter(enters);
-//         while (iter.hasNext()) {
-//              iter.next();
-//              QTableWidgetItem * item = table->item(i, 0);
-//              example.insert(iter.value(), item->text().toDouble());
-//              i++;
-//         }
-
-//    }
-
     for (int i = 0; i < entersTable->rowCount(); i++) {
         QTableWidgetItem * item = entersTable->item(i, 0);
         QTableWidgetItem * headerItem = entersTable->verticalHeaderItem(i);
@@ -186,7 +137,7 @@ void MainWindow::on_pushButton_6_clicked()
     QMapIterator<int, double> iter(example);
     while (iter.hasNext()) {
          iter.next();
-         std::cout << iter.key() << ' ' << iter.value()  <<  std::endl;
+//         std::cout << iter.key() << ' ' << iter.value()  <<  std::endl;
     }
 
     QMap<QString, double> results = perceptronContext->getResults(example);

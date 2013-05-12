@@ -22,12 +22,14 @@ public:
     Sample * getExamples();
     void setPerceptronBody(QString name);
     PerceptronBody * getPerceptronBody();
+public:
+    Sample teachExamples;
 
 private:
     double velocity;
     int eraCount;
     std::vector<Neiron*> neirons;
-    Sample teachExamples;
+
     PerceptronBody * perceptronBody;
 
 private:

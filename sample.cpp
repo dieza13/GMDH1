@@ -5,6 +5,13 @@ Sample::Sample()
 
 }
 
+void Sample::setNeironsNum(std::vector<int> neironsNum, std::vector<bool> neironsToNextLevel)
+{
+    this->neironsToNextLevel = neironsToNextLevel;
+    this->neironsNum = neironsNum;
+    neironCount = neironsNum.size();
+}
+
 void Sample::setNeironsNum(std::vector<int> neironsNum)
 {
     this->neironsNum = neironsNum;

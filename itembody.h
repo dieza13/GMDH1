@@ -9,7 +9,7 @@ public:
 public:
     int getHeight();
     int getWidth();
-protected:
+public:
     QString bodyText;
     int bodyWidht;
     int bodyHeight;

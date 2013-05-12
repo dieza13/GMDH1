@@ -7,6 +7,9 @@
 
 class PerceptronBody : public  ItemBody
 {
+
+public:
+
 public:
     PerceptronBody(QString perceptronBodyText, QList<QGraphicsItem*> neirons, std::vector<int>  enters);
 

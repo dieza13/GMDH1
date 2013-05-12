@@ -10,7 +10,7 @@ class Sample
 public:
     Sample();
 private:
-    std::vector<int> neironsNum;
+    std::vector<int> neironsNum;    
     std::vector<double*> examples;
     std::vector<int> examplesNum;
     std::vector<int> entersNum;
@@ -23,6 +23,7 @@ private:
     QList<QString> neironsName;
 public:
     void setEntersNum(std::vector<int> entersNum);
+    void setNeironsNum(std::vector<int> neironsNum, std::vector<bool> neironsToNextLevel);
     void setNeironsNum(std::vector<int> neironsNum);
     void setExamples(std::vector<double*> examples);
     void setExamplesNum(std::vector<int> examplesNum);
@@ -44,6 +45,8 @@ public:
     void setNeironsName(QList<QString> names);
     QList<QString> * getNeironsName();
     double normalizEnterValue(double value, int enterNum);
+public:
+    std::vector<bool> neironsToNextLevel;
 
 
 

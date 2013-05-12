@@ -42,13 +42,14 @@ private:
     QStringList titleList;
     QListWidget * mainListView;
     QListWidget * enterListView;
-    QListWidget * exitListView;
+//    QListWidget * exitListView;
     std::vector<QRadioButton*> radioButtonGroup;
+    QTableWidget * neironTableView;
 
 private:
-    void addDataToList(QListWidget * listView);
-    void removeDataFromList(QListWidget * listView);
-    void getColumns(std::vector<int> * columns, std::vector<int> * neironsNum, QMap<QString, int> *enters, QMap<QString, int> *neirons);
+    void addDataToList(QAbstractItemView * listView);
+    void removeDataFromList(QAbstractItemView * listView);
+    void getColumns(std::vector<int> * columns, std::vector<int> * neironsNum, QMap<QString, int> *enters, QMap<QString, int> *neironTableView, std::vector<bool> * neironsToNextLevel);
 
 };
 

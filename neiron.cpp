@@ -53,7 +53,7 @@ double Neiron::calculateWeights(double *X, int yNum)
 {
     double y = calculateY(X);
     double Y = X[enterCount + yNum];
-    double d = y  - Y;
+    double d = Y  - y;
     weight[0] += velocity * d * 1;
     for (int i = 0; i < enterCount; i ++) {
         weight[i + 1] += velocity * d * X[i];
@@ -65,8 +65,8 @@ double Neiron::calculateY(double *X)
 {
     double S = 0,y,d;
     for (int i = 0; i < enterCount;i ++) {
-        double w = weight[i + 1];
-        double x = X[i];
+        double w = weight[i + 1];        
+        double x = X[i];        
         S += x * w;
     }
     S += weight[0];

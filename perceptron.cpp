@@ -1,6 +1,7 @@
 #include "perceptron.h"
 #include <stdlib.h>
 #include <algorithm>
+#include "iostream"
 
 
 Perceptron::~Perceptron()
@@ -35,6 +36,8 @@ void Perceptron::setNeirons(int enterCount, double velocity, double alpha)
 
 //обучение сети
 void Perceptron::teachPerceptron() {
+
+
     for (int i = 0; i < eraCount; i++) {
         double _velocity = this->velocity - this->velocity * i / eraCount;
         teachingNeirons(_velocity);
@@ -80,6 +83,14 @@ double Perceptron::getFunctionValue(int neironNum, int examNum)
             break;
         }
     }
+
+//    for (int i = 0; i < teachExamples.getEnterCount(); i++) {
+//        std::cout<< exam[i] <<  ' ';
+//    }
+//    std::cout << std::endl;
+//    neiron->showWeights();
+
+
     return neiron->calculateY(exam);
 }
 
@@ -122,7 +133,13 @@ PerceptronBody *Perceptron::getPerceptronBody()
 
 double Perceptron::getFunctionValue(int neironNum, double *exam)
 {
+//    std::cout << std::endl << std::endl;
     Neiron * neiron = neirons[neironNum];
+//    for (int i = 0; i < teachExamples.getEnterCount(); i++) {
+//        std::cout<< exam[i] <<  std::endl;
+//    }
+//    std::cout << std::endl;
+//    neiron->showWeights();
     return neiron->calculateY(exam);
 }
 

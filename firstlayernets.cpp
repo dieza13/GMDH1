@@ -24,48 +24,138 @@ void FirstLayerNets::teachNets(Sample *resultSample)
         neironsCount += net->getNeironsNum().size();
     }
 
+    ////////////////////s
+    double * d = new double[neironsCount] ;
+    for (int i = 0; i < neironsCount; i++) {
+        d[i] = 0;
+    }
+/////////////////////////////////f
+
+
 //    показать веса нейронов i-ой сети
     showNeironsWeights(0);
 
     for (int i = 0; i < resultSample->getExamplesCount(); i++ ) {
         int num = resultSample->getExamplesNum()[i];
+        std::cout << resultSample->getExamplesNum()[i] << '\t';
         int posInExam = 0;
         for (int j = 0; j < Nets.size(); j++) {
             Perceptron * net = Nets[j];
             for (int k = 0; k < net->getNeironsNum().size(); k++) {
-                double value = net->getFunctionValue(k, num);//getNeiron(k)->calculateY();
+                double value = net->getFunctionValue(k, num);
                 resultSample->setEnter(i, posInExam, value);
+//////////////////////////////s
+                double deNorm = value * (resultSample->getNeironMaxValue(k) - resultSample->getNeironMinValue(k)) + resultSample->getNeironMinValue(k);
+                double celevoe = resultSample->getExamples()[i][resultSample->getEnterCount() + k] * (resultSample->getNeironMaxValue(k) - resultSample->getNeironMinValue(k)) + resultSample->getNeironMinValue(k);
+                d[k] += (deNorm - celevoe) * (deNorm - celevoe);
+/////////////////////////f
+                std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
                 posInExam ++;
             }
         }
+        std::cout << std::endl;
         posInExam = 0;
     }
 
+////////////////////////////s
+    int n = resultSample->getExamplesCount();
 
-//    std::vector<std::vector<double> > resultExams;
+    std::cout << "Ошибкапо первой сети: ";
 
-//    for (int i = 0; i < resultExamplesNum.size(); i++) {
-//        int num = resultExamplesNum[i];
-//        std::vector<double> exam;
-//        for (int j = 0; j < Nets.size(); j++) {
-//            Perceptron * net = Nets[j];
-//            std::vector<double> exit = net->getFunctionValue(net->getExample(num));
-//            exam.insert(exam.end(), exit.begin(), exit.end());
-//        }
-//        double * example = &exam[0];
-//        resultExams.push_back(exam);
+    for (int i = 0; i < neironsCount; i++) {
+        d[i] = sqrt(d[i] / n);
+        std::cout << d[i] << " ";
+    }
 
-//    }
+    std::cout << std::endl;
+//////////////////////////////f
 
-//    for (int i = 0; i < resultExams.size(); i++) {
-//        std::vector<double> result = resultExams[i];
-//        for (int j = 0; j < result.size(); j++) {
-//            std::cout << /*example[0]*/ resultExams[i][j] * (Nets[0]->getNeiron(j)->getMaxValue() - Nets[0]->getNeiron(j)->getMinValue()) + Nets[0]->getNeiron(j)->getMinValue() << " ";
+    std::cout << "/////////////////" << std::endl;
 
+//    for (int i = 0; i < resultSample->getExamples().size(); i++) {
+//        for (int j = 0; j < 4; j++) {
+//            std::cout <<  resultSample->getExamples()[i][j] << " ";
 //        }
 //        std::cout << std::endl;
 //    }
+
 }
+
+
+
+
+
+//double * d = new double[neironsCount] ;
+
+//for (int i = 0; i < neironsCount; i++) {
+//    d[i] = 0;
+//}
+
+
+
+
+////    показать веса нейронов i-ой сети
+//showNeironsWeights(0);
+
+//for (int i = 0; i < resultSample->getExamplesCount(); i++ ) {
+//    int num = resultSample->getExamplesNum()[i];
+//    std::cout << resultSample->getExamplesNum()[i] << '\t';
+//    int posInExam = 0;
+//    for (int j = 0; j < Nets.size(); j++) {
+//        Perceptron * net = Nets[j];
+//        for (int k = 0; k < net->getNeironsNum().size(); k++) {
+//            double value = net->getFunctionValue(k, num);
+//            resultSample->setEnter(i, posInExam, value);
+
+//            ///////////
+//            double deNorm = value * (resultSample->getNeironMaxValue(k) - resultSample->getNeironMinValue(k)) + resultSample->getNeironMinValue(k);
+//            double celevoe = resultSample->getExamples()[i][resultSample->getEnterCount() + k] * (resultSample->getNeironMaxValue(k) - resultSample->getNeironMinValue(k)) + resultSample->getNeironMinValue(k);
+//            d[k] += (deNorm - celevoe) * (deNorm - celevoe);
+//            ///////////
+
+//            std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
+//            posInExam ++;
+//        }
+//    }
+//    std::cout << std::endl;
+//    posInExam = 0;
+//}
+
+//int n = resultSample->getExamplesCount();
+
+//std::cout << "Ошибка: ";
+
+//for (int i = 0; i < neironsCount; i++) {
+//    d[i] = sqrt(d[i] / n);
+//    std::cout << d[i] << " ";
+//}
+
+//std::cout << std::endl;
+
+
+//std::cout << "/////////////////" << std::endl;
+
+//for (int i = 0; i < resultSample->getExamples().size(); i++) {
+//    for (int j = 0; j < 4; j++) {
+//        std::cout <<  resultSample->getExamples()[i][j] << " ";
+//    }
+//    std::cout << std::endl;
+//}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
  std::vector<int>  FirstLayerNets::getResultVectorIntersect()
 {
@@ -101,11 +191,14 @@ void FirstLayerNets::teachNets(Sample *resultSample)
  }
 
 
- std::vector<int> FirstLayerNets::getNeironNum()
+std::vector<int> FirstLayerNets::getNeironNum()
  {
      Perceptron * net1 = Nets[0];
      std::vector<int> neironsNum;
-     for (int i = 0; i < net1->getNeironsNum().size(); i++) neironsNum.push_back(net1->getNeironsNum()[i]);
+
+     for (int i = 0; i < net1->getNeironsNum().size(); i++)
+//         if (net1->teachExamples.neironsToNextLevel[i])
+             neironsNum.push_back(net1->getNeironsNum()[i]);
      for (int i = 1; i < Nets.size(); i++) {
          Perceptron * net = Nets[i];
          std::vector<int> nums = net->getNeironsNum();
@@ -160,7 +253,8 @@ void FirstLayerNets::teachNets(Sample *resultSample)
          }
 
          for (int j = 0; j < net->getNeironsNum().size(); j++) {
-             results.push_back(net->getFunctionValue(j, exam));
+             double value = net->getFunctionValue(j, exam);
+             results.push_back(value);
          }
      }
      return results;

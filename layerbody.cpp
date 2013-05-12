@@ -15,6 +15,9 @@ LayerBody::LayerBody(QList<PerceptronBody *> perceptrons)
         bodyWidht = netBody->getWidth();
 
     }
+
+
+
     bodyWidht += 40;
 }
 

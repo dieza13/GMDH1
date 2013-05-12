@@ -40,7 +40,18 @@ std::vector<QStringList> FileReader::getDataFromFile(QString string)
         dataRows.push_back(params);
         data.push_back(list);
     }
+
     normalizeData();
+
+//    for (int i = 0; i < dataRows.size(); i++) {
+//        for (int j = 0; j < list.size(); j++) {
+//            std::cout << dataRows[i][j] << ' ' ;
+//        }
+//        std::cout << std::endl;
+
+//    }
+
+
     return data;
 }
 
@@ -52,13 +63,12 @@ void FileReader::getFirstLayerExams(std::vector<int> columnsNum, int enterCount,
     std::vector<int> examplesNum;
     std::vector<std::vector<double> > minMaxValueForNeirons;
     std::vector<std::vector<double> > minMaxValueForEnters;
-    for (int i = 0; i < dataRows.size() - 1; i++) {
+    for (int i = 0; i < dataRows.size(); i++) {
         bool fullResult = true;
         double * row = new double[columnsNum.size()];
         int k = 0;
         for (int j = 0; j < columnsNum.size(); j++) {
-            double num = dataRows[i][columnsNum[j]];
-            row[k] = num;
+            row[k] = dataRows[i][columnsNum[j]];
             if (row[k] == INCORRECT_VALUE) {
                 fullResult = false;
                 break;

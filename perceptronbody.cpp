@@ -15,6 +15,10 @@ PerceptronBody::PerceptronBody(QString perceptronBodyText, QList<QGraphicsItem*>
 //    setFlag(ItemIsMovable);
     bodyText = perceptronBodyText;
     bodyHeight = neirons.size() * neironSize + neironSize / 2 * (neirons.size() + 1);
+
+    int enterAreaSize = enters.size() * enterSize + enterSize / 2 * (enters.size() + 1);
+    if (bodyHeight < enterAreaSize)
+        bodyHeight = enterAreaSize;
 }
 
 void PerceptronBody::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
@@ -40,8 +44,7 @@ void PerceptronBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     int neironCount = neirons.size();
 
 
-    int enterAreaSize = enters.size() * enterSize + enterSize / 2 * (enters.size() + 1);
-    if (bodyHeight < enterAreaSize) bodyHeight = enterAreaSize;
+
 
 
     QRectF rec = boundingRect();

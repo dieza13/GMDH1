@@ -36,28 +36,86 @@ void PerceptronContext::addNewNet(Perceptron * perceptron, int neironNetType)
 void PerceptronContext::teachNets()
 {    
     firstLayerNets->teachNets(resultPerceptron->getExamples());
-    for (int i = 0; i < resultPerceptron->getExamplesNum().size(); i++) {
-        double * exam = resultPerceptron->getExample(i);
-        for (int j = 0; j < resultPerceptron->getExamples()->getEnterCount() + resultPerceptron->getExamples()->getNeironCount(); j++)
-            std::cout << exam[j] << ' ';
-        std::cout << std::endl;
-    }
+//    for (int i = 0; i < resultPerceptron->getExamplesNum().size(); i++) {
+//        double * exam = resultPerceptron->getExample(i);
+//        for (int j = 0; j < resultPerceptron->getExamples()->getEnterCount() + resultPerceptron->getExamples()->getNeironCount(); j++)
+//            std::cout << exam[j] << ' ';
+//        std::cout << std::endl;
+//    }
+
+    std::cout << "asdasd" << std::endl;
     resultPerceptron->teachPerceptron();
 
     Sample * sample = resultPerceptron->getExamples();
 
-    for (int i = 0; i < sample->getExamplesNum().size(); i++) {
-        double * exam = sample->getExamples()[i];
-        for (int j = 0; j < (sample->getEnterCount() + sample->getNeironCount()); j++) {
-            if (j < sample->getEnterCount())
-            /*std::cout << */printf("%4.5f ", exam[j]) /*<< ' '*/;
-            else
-                printf("%4.5f ", exam[j] * (sample->getNeironMaxValue(j - sample->getEnterCount()) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
+    std::cout << "|||||||||||" << std::endl;
 
+    ////////////////////s
+    int neironsCount = resultPerceptron->getNeironsNum().size();
+    double * d = new double[neironsCount] ;
+    for (int i = 0; i < neironsCount; i++) {
+        d[i] = 0;
+    }
+    /////////////////////////////////f
+
+
+    for (int i = 0; i < sample->getExamples().size(); i++) {
+        double  exam[2];
+        exam[0] = sample->getExamples()[i][2];
+        exam[1] = sample->getExamples()[i][3];
+        for (int j = 0; j < resultPerceptron->getNeironsNum().size(); j++) {
+            double value = resultPerceptron->getFunctionValue(j, exam);
+
+            //////////////////////////////s
+            double deNorm = value * (resultPerceptron->getExamples()->getNeironMaxValue(j) - resultPerceptron->getExamples()->getNeironMinValue(j)) + resultPerceptron->getExamples()->getNeironMinValue(j);
+            double celevoe = resultPerceptron->getExamples()->getExamples()[i][resultPerceptron->getExamples()->getEnterCount() + j] * (resultPerceptron->getExamples()->getNeironMaxValue(j) - resultPerceptron->getExamples()->getNeironMinValue(j)) + resultPerceptron->getExamples()->getNeironMinValue(j);
+            d[j] += (deNorm - celevoe) * (deNorm - celevoe);
+            /////////////////////////f
+
+
+            std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
+//            std::cout << resultPerceptron->getFunctionValue(j, exam) << " ";
         }
         std::cout << std::endl;
     }
+
+    ////////////////////////////s
+    int n = resultPerceptron->getExamples()->getExamplesCount();
+
+    std::cout << "Ошибка по второй сети: ";
+
+    for (int i = 0; i < neironsCount; i++) {
+        d[i] = sqrt(d[i] / n);
+        std::cout << d[i] << " ";
+    }
+
+    std::cout << std::endl;
+    //////////////////////////////f
+
+//    for (int i = 0; i < sample->getExamplesNum().size(); i++) {
+//        double * exam = sample->getExamples()[i];
+//        for (int j = 0; j < (sample->getEnterCount() + sample->getNeironCount()); j++) {
+//            if (j < sample->getEnterCount())
+//            /*std::cout << */printf("%4.5f ", exam[j]) /*<< ' '*/;
+//            else
+//                printf("%4.5f ", exam[j] * (sample->getNeironMaxValue(j - sample->getEnterCount()) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
+
+//        }
+////        std::cout << std::endl;
+//    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 std::vector<int>  PerceptronContext::getExamplesIntersect()
@@ -118,13 +176,13 @@ QMap<QString, double> PerceptronContext::getResults(QMap<int, double> example)
     int entersCount = resultPerceptron->getExamples()->getEnterCount();
     double * resultExample = new double[entersCount];
     int i = 0;
-    for (int i = 0; i < entersCount - resultExam.size(); i++) {
+    for (i = 0; i < entersCount - resultExam.size(); i++) {
         int enterNum = resultPerceptron->getExamples()->getEntersNum()->at(i);
         double value = example[enterNum];
         resultExample[i] = resultPerceptron->getExamples()->normalizEnterValue(value, enterNum);
     }
     for (int j = 0; j < resultExam.size(); j++) {
-        resultExample[j + i + 1] = resultExam[j];
+        resultExample[j + i] = resultExam[j];
     }
     QVector<double> resultValues;
     QMap<QString, double> denormalizResultValues;
