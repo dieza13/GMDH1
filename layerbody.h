@@ -10,6 +10,7 @@ class LayerBody  : public  ItemBody
 
 public:
     LayerBody(QList<PerceptronBody*> perceptrons);
+    ~LayerBody();
 
 private:
     int border;

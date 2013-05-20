@@ -35,6 +35,8 @@ private slots:
 
     void on_toolButton_4_clicked();
 
+signals:
+    void addNewNet();
 private:
     Ui::NeiroSetDialog *ui;
     PerceptronContext * perceptronContext;

@@ -3,6 +3,7 @@
 #include <vector>
 #include <QList>
 #include <QString>
+#include<QStringList>
 
 class Sample
 {
@@ -10,17 +11,17 @@ class Sample
 public:
     Sample();
 private:
-    std::vector<int> neironsNum;    
-    std::vector<double*> examples;
+
+
     std::vector<int> examplesNum;
-    std::vector<int> entersNum;
+
     std::vector<std::vector<double> > minMaxNeironsValue;
     std::vector<std::vector<double> > minMaxEntersValue;
-    int neironCount;
-    int exampleCount;
-    int enterCount;
-    QList<QString> entersName;
-    QList<QString> neironsName;
+
+    int exampleCount;    
+public:
+    QStringList entersName;
+    QStringList neironsName;
 public:
     void setEntersNum(std::vector<int> entersNum);
     void setNeironsNum(std::vector<int> neironsNum, std::vector<bool> neironsToNextLevel);
@@ -46,6 +47,11 @@ public:
     QList<QString> * getNeironsName();
     double normalizEnterValue(double value, int enterNum);
 public:
+    std::vector<double*> examples;
+    int neironCount;
+    int enterCount;
+    std::vector<int> entersNum;
+    std::vector<int> neironsNum;
     std::vector<bool> neironsToNextLevel;
 
 

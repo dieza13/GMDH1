@@ -8,6 +8,8 @@ class NetsLayer
 public:
     ~NetsLayer();
 protected:
+
+public:
     std::vector<Perceptron*> Nets;
 
 public:

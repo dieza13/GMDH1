@@ -10,7 +10,8 @@ void NetsLayer::addNewNet(Perceptron * perceptron)
 
 NetsLayer::~NetsLayer()
 {
-    for (int i = 0; i < Nets.size(); i++) delete Nets[i];
+    for (int i = 0; i < Nets.size(); i++)
+        delete Nets[i];
 }
 
 void NetsLayer::showNeironsWeights(int i)

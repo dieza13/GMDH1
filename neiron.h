@@ -22,6 +22,7 @@ public:
     double getMinValue();
     void showWeights();
     NeironBody * getNeironBody();
+    void  iniWeight(); //инициализация весов случайными маленькими значениями
 
 private:
     int enterCount;//количество входов
@@ -34,7 +35,7 @@ private:
     QLabel neironTitle;
     NeironBody * neironBody;
 private:        
-    void  iniWeight(); //инициализация весов случайными маленькими значениями
+
 };
 
 #endif // NEIRON_H

@@ -134,18 +134,12 @@ void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<i
 {    
     std::vector<int> resultNeirons;
     std::vector<int> newExampleNums;
-    getResultNeironNums(&neironNums, &newNeirons, &resultNeirons);
-    if (sample->getEntersNum()->size() != 0) {
-        sample->getEntersNum()->insert(sample->getEntersNum()->end(), neironNums.begin(), neironNums.end());        
-    } else {
-        sample->setEntersNum(neironNums);
-    }
-    sample->setEnterCount(sample->getEntersNum()->size());
+
 
     std::vector<double*> resultExams;
     std::vector<std::vector<double> > minMaxValueForColumn;
     std::vector<std::vector<double> > minMaxValueForEnters;
-    int examLen = neironNums.size() + newEnters.size() + resultNeirons.size();
+    int examLen =sample->enterCount + newEnters.size() + sample->neironCount;
     for (int i = 0; i < exampleNums.size(); i++) {
 
         double * fullExam = dataRows[exampleNums[i]];
@@ -160,14 +154,15 @@ void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<i
         //помещение в пример результирующей выборки значений новых добавленных входов
         double * example = new double[examLen];
         for (int j = 0; j < newEnters.size(); j++) {
-            int posOfNewEnter = neironNums.size() + j;
+            int posOfNewEnter = sample->neironsNum.size() + j;
             int indOfVal = newEnters[j];         
             example[posOfNewEnter] = fullExam[indOfVal];
         }
         //помещение в пример результирующей выборки значений результирующих выходов
-        for (int j = 0; j < resultNeirons.size(); j++) {
-            int neironPos = neironNums.size() + newEnters.size() + j;
-            example[neironPos] = fullExam[resultNeirons[j]];
+        for (int j = 0; j < sample->neironCount; j++) {
+            int neironPos = sample->enterCount + j;
+            double value = fullExam[sample->neironsNum[j]];
+            example[neironPos] = value;
         }
 
         resultExams.push_back(example);
@@ -178,8 +173,8 @@ void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<i
     }
 
     //получение значений min/ max для результирующих выходов
-    for (int j = 0; j < resultNeirons.size(); j++) {
-        minMaxValueForColumn.push_back(minMaxForColumn[resultNeirons[j]]);
+    for (int j = 0; j < sample->neironCount; j++) {
+        minMaxValueForColumn.push_back(minMaxForColumn[sample->neironsNum[j]]);
     }
     //получение значений min/ max для результирующих выходов
     for (int j = 0; j < newEnters.size(); j++) {
@@ -190,16 +185,18 @@ void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<i
     sample->setMinMaxNeironsValue(minMaxValueForColumn);
     sample->setExamplesNum(newExampleNums);
     sample->setExamples(resultExams);
-    sample->setNeironsNum(resultNeirons);
-    sample->setEnterCount(neironNums.size() + newEnters.size());
+//    sample->setNeironsNum(resultNeirons);
+//    sample->setEnterCount(neironNums.size() + newEnters.size());
     for (int i = 0; i < sample->getExamplesCount(); i++) {
         double * example = sample->getExamples()[i];
         for (int j = 0; j < examLen; j++) {
 
-            if (j < examLen - sample->getEnterCount() + 1)
+            if (j < examLen - sample->getEnterCount() )
             /*std::cout << */printf("%4.5f ", example[j]) /*<< ' '*/;
-            else
-                printf("%4.5f ", example[j] * (sample->getNeironMaxValue(j - sample->getEnterCount()) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
+            else {
+                int t = j - sample->getEnterCount();
+                printf("%4.5f ", example[j] * (sample->getNeironMaxValue(t) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
+            }
         }
         std::cout << std::endl;
     }

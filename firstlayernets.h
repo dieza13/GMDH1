@@ -16,7 +16,7 @@ private:
 public:
     void teachNets(Sample * resultSample);
     std::vector<int> getResultVectorIntersect(); //выбрать примеры, которые характерны каждой сети
-    std::vector<int> getNeironNum();
+    void setResultSample(Sample * sample);
     int getNetsCount();
     PerceptronBody * getNetVisualObj(int netNum);
     void setLayerBody();

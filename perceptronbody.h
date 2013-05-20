@@ -12,6 +12,7 @@ public:
 
 public:
     PerceptronBody(QString perceptronBodyText, QList<QGraphicsItem*> neirons, std::vector<int>  enters);
+    ~PerceptronBody();
 
 //    void addNeironBody(NeironBody * neironBody);
 

@@ -6,6 +6,7 @@ class ItemBody : public QGraphicsItem
 {
 public:
     ItemBody();
+    ~ItemBody();//////////////////
 public:
     int getHeight();
     int getWidth();

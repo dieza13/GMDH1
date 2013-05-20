@@ -21,6 +21,14 @@ LayerBody::LayerBody(QList<PerceptronBody *> perceptrons)
     bodyWidht += 40;
 }
 
+LayerBody::~LayerBody()
+{
+    for (int i = 0; i < perceptrons.size(); i++) {
+        delete perceptrons.at(i);
+    }
+
+}
+
 void LayerBody::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
 

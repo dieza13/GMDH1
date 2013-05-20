@@ -18,6 +18,7 @@
 #include <QGraphicsScene>
 #include <QMap>
 #include <getexmpledialog.h>
+#include <QGraphicsItem>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -25,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     perceptronContext = new PerceptronContext();
+    chgAllNetsLW = ui->chgAllNetsLW;
+    connect(chgAllNetsLW, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(showNetParam(QListWidgetItem *)));
 }
 
 MainWindow::~MainWindow()
@@ -72,6 +75,10 @@ void MainWindow::on_pushButton_2_clicked()
 {
     QStringList titleList;
     NeiroSetDialog * neiroDialog = new NeiroSetDialog();
+
+    QObject::connect(neiroDialog, SIGNAL(addNewNet()),
+                     this, SLOT(setNetsList()));
+
     QTableWidget * table = ui->tableWidget;
     for (int i = 0; i < table->columnCount(); i++) titleList.push_back(table->horizontalHeaderItem(i)->text());
 
@@ -82,18 +89,10 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-
-
-   QMap<QString, int> map;
-   QString a("a");
-   QString b("c");
-   QString c("b");
-   map[a] = 1;
-   map[b] = 2;
-   map[c] = 3;
-   std::cout << map["a"] << std::endl << map["b"] << std::endl << map["c"] << std::endl<< map["d"] << map["e"] <<std::endl;
-
-
+    delete perceptronContext;
+    perceptronContext = new PerceptronContext();
+    delete ui->graphicsView->scene();
+    perceptronContext->resultPerceptron = NULL;
 }
 
 void MainWindow::on_pushButton_4_clicked()
@@ -211,3 +210,72 @@ void MainWindow::setResultTable()
 }
 
 
+
+
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+
+}
+
+void MainWindow::setNetsList()
+{
+    QListWidget * lw = ui->chgAllNetsLW;
+    QStringList netsList;
+    for (int i = 0; i < perceptronContext->firstLayerNets->getNetsCount(); i++) {
+        netsList.append("Сеть " + QString::number(i + 1) + " первого слоя");
+    }
+
+    if (perceptronContext->resultPerceptron != NULL) {
+        netsList.append("Результирующая сеть");
+    }
+    lw->clear();
+    lw->addItems(netsList);
+}
+
+void MainWindow::showNetParam(QListWidgetItem * item)
+{
+    int row = chgAllNetsLW->row(item);
+    Perceptron * net = ((row + 1) > perceptronContext->firstLayerNets->getNetsCount()) ? perceptronContext->resultPerceptron : perceptronContext->firstLayerNets->Nets[row];
+
+    ui->chgEraDSB->setValue(net->eraCount);
+    ui->chgVelosityDSB->setValue(net->velocity);
+    ui->chgSigmaPapamDSB->setValue(net->alpha);
+
+
+
+
+
+
+
+
+    std::cout << QString::number(row).toStdString() << std::endl;
+}
+
+
+
+void MainWindow::on_chgNetBTN_clicked()
+{
+    int netNum = -1;
+    int size = ui->chgAllNetsLW->count();
+    for (int i = 0; i < size; i++) {
+        if ( ui->chgAllNetsLW->item(i)->isSelected()) {
+            netNum = i;
+        }
+    }
+    Perceptron * net = NULL;
+    if (netNum > (perceptronContext->firstLayerNets->getNetsCount() - 1))
+        net = perceptronContext->resultPerceptron;
+    else {
+        net = perceptronContext->firstLayerNets->Nets[netNum];
+    }
+
+    if (net != NULL) {
+        net->alpha = ui->chgSigmaPapamDSB->value();
+        net->velocity = ui->chgVelosityDSB->value();
+        net->eraCount = ui->chgEraDSB->value();
+    }
+
+
+}

@@ -4,6 +4,12 @@ ItemBody::ItemBody()
 {
 }
 
+ItemBody::~ItemBody()///////////////////////////////
+{
+//    i
+//    delete penColor;
+}
+
 QRectF ItemBody::boundingRect() const
 {
     return QRectF(0, 0, bodyWidht, bodyHeight);

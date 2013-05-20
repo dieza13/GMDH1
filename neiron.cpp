@@ -14,7 +14,8 @@ void Neiron::iniWeight()
 
 Neiron::~Neiron()
 {
-    delete weight;
+    if (weight != NULL || weight != 0)
+        delete weight;
 }
 
 Neiron::Neiron(int enterCount, double velocity, double alpha, int neironNum)
@@ -54,9 +55,10 @@ double Neiron::calculateWeights(double *X, int yNum)
     double y = calculateY(X);
     double Y = X[enterCount + yNum];
     double d = Y  - y;
-    weight[0] += velocity * d * 1;
+    double v = velocity;
+    weight[0] +=  v * d * 1;
     for (int i = 0; i < enterCount; i ++) {
-        weight[i + 1] += velocity * d * X[i];
+        weight[i + 1] += v * d * X[i];
     }
     return y;
 }
@@ -70,7 +72,8 @@ double Neiron::calculateY(double *X)
         S += x * w;
     }
     S += weight[0];
-    y = 1 / (1 + exp (- S * alpha));
+    double a = alpha;
+    y = 1 / (1 + exp (- S * a));
     return y;
 }
 

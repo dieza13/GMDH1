@@ -21,6 +21,13 @@ PerceptronBody::PerceptronBody(QString perceptronBodyText, QList<QGraphicsItem*>
         bodyHeight = enterAreaSize;
 }
 
+PerceptronBody::~PerceptronBody()
+{
+    for (int i = 0; i < neirons.size(); i++) {
+        delete neirons.at(i);
+    }
+}
+
 void PerceptronBody::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
 //    pressed = false;

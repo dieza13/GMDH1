@@ -50,14 +50,15 @@ void NeiroSetDialog::on_pushButton_clicked()
     perceptronContext->addNeirons(neirons);
     sample.setEntersNum(columnNum);
     if (layerNum == 1) {
-        sample.setNeironsNum(neironsNum);
+        sample.setNeironsNum(neironsNum, neironsToNextLevel);
         sample.setEnterCount(columnNum.size());
         columnNum.insert(columnNum.end(), neironsNum.begin(), neironsNum.end());
         fileReader->getFirstLayerExams(columnNum, columnNum.size() - neironsNum.size(), &sample);
     } else if (layerNum == 2) {
-
+        sample.setNeironsNum(neironsNum);
         std::vector<int> firstLayerExamsIntersect = perceptronContext->getExamplesIntersect();
-        std::vector<int> firstLayerNeironsNum = perceptronContext->getFirstLayerNets()->getNeironNum();
+        perceptronContext->getFirstLayerNets()->setResultSample(&sample);
+        std::vector<int> firstLayerNeironsNum;
         fileReader->getSecondLayerExams(firstLayerExamsIntersect, firstLayerNeironsNum, columnNum, neironsNum, &sample);
 
     }
@@ -65,6 +66,7 @@ void NeiroSetDialog::on_pushButton_clicked()
     newPerceptronNet = new Perceptron(sample, eraCount, alpha, velocity);
 
     perceptronContext->addNewNet(newPerceptronNet, layerNum);
+    emit addNewNet();
     close();
 }
 

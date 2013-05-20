@@ -44,52 +44,50 @@ void PerceptronContext::teachNets()
 //    }
 
     std::cout << "asdasd" << std::endl;
-    resultPerceptron->teachPerceptron();
+
+    resultPerceptron->teachPerceptron(true);
 
     Sample * sample = resultPerceptron->getExamples();
 
     std::cout << "|||||||||||" << std::endl;
 
     ////////////////////s
-    int neironsCount = resultPerceptron->getNeironsNum().size();
-    double * d = new double[neironsCount] ;
-    for (int i = 0; i < neironsCount; i++) {
-        d[i] = 0;
-    }
+//    int neironsCount = resultPerceptron->getNeironsNum().size();
+//    double * denorm = new double[neironsCount] ;
+//    double * norm = new double[neironsCount] ;
+//    for (int i = 0; i < neironsCount; i++) {
+//        denorm[i] = 0;
+//        norm[i] = 0;
+//    }
     /////////////////////////////////f
+    resultPerceptron->calcError("result net");
 
+//    for (int i = 0; i < sample->getExamples().size(); i++) {
+//        double  exam[2];
+//        exam[0] = sample->getExamples()[i][2];
+//        exam[1] = sample->getExamples()[i][3];
+//        for (int j = 0; j < resultPerceptron->getNeironsNum().size(); j++) {
+//            calcError(denorm, norm, exam);
+//        }
+//        std::cout << std::endl;
+//    }
 
-    for (int i = 0; i < sample->getExamples().size(); i++) {
-        double  exam[2];
-        exam[0] = sample->getExamples()[i][2];
-        exam[1] = sample->getExamples()[i][3];
-        for (int j = 0; j < resultPerceptron->getNeironsNum().size(); j++) {
-            double value = resultPerceptron->getFunctionValue(j, exam);
+//    ////////////////////////////s
+//    int n = resultPerceptron->getExamples()->getExamplesCount();
 
-            //////////////////////////////s
-            double deNorm = value * (resultPerceptron->getExamples()->getNeironMaxValue(j) - resultPerceptron->getExamples()->getNeironMinValue(j)) + resultPerceptron->getExamples()->getNeironMinValue(j);
-            double celevoe = resultPerceptron->getExamples()->getExamples()[i][resultPerceptron->getExamples()->getEnterCount() + j] * (resultPerceptron->getExamples()->getNeironMaxValue(j) - resultPerceptron->getExamples()->getNeironMinValue(j)) + resultPerceptron->getExamples()->getNeironMinValue(j);
-            d[j] += (deNorm - celevoe) * (deNorm - celevoe);
-            /////////////////////////f
+//    std::cout << "Ошибка по второй сети: ";
 
+//    QString errorD = "Denorm: ";
+//    QString errorN = "Norm: ";
+//    for (int i = 0; i < neironsCount; i++) {
+//        denorm[i] = sqrt(denorm[i] / n);
+//        errorD.append(QString::number(denorm[i]) + " ");
+//        norm[i] = sqrt(norm[i] / n);
+//        errorN.append(QString::number(norm[i]) + " ");
 
-            std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
-//            std::cout << resultPerceptron->getFunctionValue(j, exam) << " ";
-        }
-        std::cout << std::endl;
-    }
+//    }
 
-    ////////////////////////////s
-    int n = resultPerceptron->getExamples()->getExamplesCount();
-
-    std::cout << "Ошибка по второй сети: ";
-
-    for (int i = 0; i < neironsCount; i++) {
-        d[i] = sqrt(d[i] / n);
-        std::cout << d[i] << " ";
-    }
-
-    std::cout << std::endl;
+//    std::cout << errorD.toStdString() << errorN.toStdString() << " " << std::endl;
     //////////////////////////////f
 
 //    for (int i = 0; i < sample->getExamplesNum().size(); i++) {
@@ -104,15 +102,6 @@ void PerceptronContext::teachNets()
 ////        std::cout << std::endl;
 //    }
 }
-
-
-
-
-
-
-
-
-
 
 
 

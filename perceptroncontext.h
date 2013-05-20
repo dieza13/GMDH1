@@ -29,10 +29,14 @@ public:
     QMap<QString, int> getEnters();
     QMap<QString, double>  getResults(QMap<int, double> example);
 
-
-private:
+public:
     FirstLayerNets * firstLayerNets;
     Perceptron * resultPerceptron;
+
+
+private:
+
+
     QMap<QString, int> neirons;
     QMap<QString, int> enters;
     Sample * resultSample;
