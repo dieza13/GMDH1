@@ -8,10 +8,11 @@ class FileReader
 {
 public:
     FileReader();
+    ~FileReader();
 public:
     std::vector<QStringList> getDataFromFile(QString string);
     void getFirstLayerExams(std::vector<int> columnsNum, int enterCount, Sample * sample);
-     void getSecondLayerExams(std::vector<int> exampleNums, std::vector<int> neironNums, std::vector<int> newEnters, std::vector<int> newNeirons, Sample *sample);
+     void getSecondLayerExams(std::vector<int> exampleNums, std::vector<int> newEnters, std::vector<int> newNeirons, Sample *sample);
 public:
     std::vector<std::vector<double> > minMaxForColumn;
 

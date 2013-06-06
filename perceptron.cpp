@@ -19,7 +19,7 @@ Perceptron::Perceptron(Sample teachExams, int eraCount, double alpha,  double ve
     this->velocity = velocity;
     this->alpha = alpha;
     teachExamples = teachExams;    
-    setNeirons(teachExams.getEnterCount(), velocity, alpha);
+    setNeirons(teachExams.getEnterCount(), this->velocity, this->alpha);
 
 }
 
@@ -150,9 +150,38 @@ PerceptronBody *Perceptron::getPerceptronBody()
     return perceptronBody;
 }
 
-void Perceptron::calcError(QString netName)
+
+
+void Perceptron::calcError(QString netName, QVBoxLayout * normalErrorPL, bool isResult, std::vector<double> * allNetsError, int errorNum)
 {
+    std::cout << "Входы:" << std::endl;
+    for (int i = 0; i < teachExamples.entersName.size(); i++) {
+        std::cout << teachExamples.entersName[i].toStdString() <<  "\t";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Выходы:" << std::endl;
+    for (int i = 0; i < teachExamples.neironsName.size(); i++) {
+        std::cout << teachExamples.neironsName[i].toStdString() <<  "\t";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Параметры настройки сети:" << std::endl;
+
+    std::cout << "Скорость:" << "\t" << velocity << "\t" << "Параметр сигмоидальной функции:" << "\t" << alpha << "\t" << "Количество эпох обучения"
+                 << "\t" << eraCount << std::endl;
+
+
     int neironsCount = teachExamples.getNeironCount();
+
+
+
+     int n = teachExamples.getExamplesCount();
+
+
+     int num = 3;
+    QTableWidget * normalErrorT = new QTableWidget(n + num, neironsCount + 1);
+    normalErrorT->verticalHeader()->setVisible(false);
 
     double * denorm = new double[neironsCount] ;
     double * norm = new double[neironsCount] ;
@@ -161,46 +190,132 @@ void Perceptron::calcError(QString netName)
         norm[i] = 0;
     }
 
-    int n = teachExamples.getExamplesCount();
+
 
     for (int i = 0; i < teachExamples.getExamplesCount(); i++) {
+        double * exam = teachExamples.examples[i];
+
+//        for (int k = 0; k < teachExamples.enterCount; k++)
+//            std::cout << exam[k] << " ";
+//        std::cout << std::endl;
+
+        setTable(i, 0, teachExamples.getExamplesNum()[i] + 1, normalErrorT);
         std::cout << teachExamples.getExamplesNum()[i] + 1 << '\t';
+        int neironPos = 0;
         for (int k = 0; k < getNeironsNum().size(); k++) {
-            double value = getFunctionValue(k, i);
+            double value = getFunctionValue(k, exam);
             double deNorm = value * (teachExamples.getNeironMaxValue(k) - teachExamples.getNeironMinValue(k)) + teachExamples.getNeironMinValue(k);
             double v = teachExamples.getExamples()[i][teachExamples.getEnterCount() + k];
 
             double celevoe = v * (teachExamples.getNeironMaxValue(k) - teachExamples.getNeironMinValue(k)) + teachExamples.getNeironMinValue(k);
             denorm[k] += (deNorm - celevoe) * (deNorm - celevoe);
             norm[k] += (value - v) * (value - v);
-            std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
+            if (isResult) {
+                if (!teachExamples.neironsToNextLevel[k]) {
+                    setTable(i, k + 1, 0, normalErrorT);
+                    std::cout << 0 << '\t' << "("<< 0 << ')' <<'\t';
+                } else {
+                    setTable(i, k + 1, deNorm, normalErrorT);
+                    std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
+                }
+            } else {
+                setTable(i, k + 1, deNorm, normalErrorT);
+                std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
+            }
+//            std::cout << value << '\t' << "("<< deNorm << ')' <<'\t';
+
+//            setTable(i, k + 1, value, normalErrorT);
         }
         std::cout << std::endl;
     }
 
     std::cout << "Ошибка по " + netName.toStdString() + " сети: ";
 
-    QString errorD = "Denorm: ";
-    QString errorN = "Norm: ";
-    for (int i = 0; i < teachExamples.neironCount; i++) {
-        denorm[i] = sqrt(denorm[i] / n);
-        errorD.append(QString::number(denorm[i]) + " ");
-        norm[i] = sqrt(norm[i] / n);
-        errorN.append(QString::number(norm[i]) + " ");
+    QString errorD = "Denorm: \n ";
+    QString errorN = "Norm: \n ";
+    double normE = 0;
+    for (int i = 0; i < neironsCount; i++) {
+        if (isResult) {
+
+            if (!teachExamples.neironsToNextLevel[i]) {
+                setTable(n, i + 1, 0, normalErrorT);
+                setTable(n + 1, i + 1, 0, normalErrorT);
+                double e = allNetsError->at(i);
+                normE += e;
+            } else {
+                denorm[i] = sqrt(denorm[i] / n);
+                errorD.append(QString::number(denorm[i]) + '\t');
+                errorN.append(QString::number(sqrt(norm[i] / n)) + '\t');
+                setTable(n, i + 1, norm[i], normalErrorT);
+                setTable(n + 1, i + 1, denorm[i], normalErrorT);
+                normE += norm[i];
+            }
+        } else {
+            double e = norm[i];
+            normE += e;
+            errorD.append(QString::number(sqrt(denorm[i] / n)) + '\t');
+            allNetsError->push_back(e);
+            errorN.append(QString::number(sqrt(norm[i] / n)) + '\t');
+            setTable(n, i + 1, norm[i], normalErrorT);
+            setTable(n + 1, i + 1, denorm[i], normalErrorT);
+        }
 
     }
-    std::cout << errorD.toStdString() << errorN.toStdString() << " " << std::endl;
+    std::cout << errorD.toStdString() << std::endl << errorN.toStdString() << " " << std::endl;
+    normalErrorPL->addWidget(normalErrorT);
+    setTable(n, 0, "Норм. ошибка", normalErrorT);
+    setTable(n + 1, 0, "Денорм. ошибка", normalErrorT);
+    setTable(n + 2, 0, "Общ. норм. ошибка", normalErrorT);
+    normE = sqrt(normE/(neironsCount * n));
+    std::cout << "Общ. норм. ошибка: " << QString::number(normE).toStdString() << std::endl;
+    setTable(n + 2, 1, normE, normalErrorT);
+}
+
+void Perceptron::setTable(int row, int col, double value, QTableWidget * table)
+{
+
+    QTableWidgetItem * cell = new QTableWidgetItem(QString::number(value));
+    table->setItem(row, col, cell);
+}
+
+void Perceptron::setTable(int row, int col, QString value, QTableWidget *table)
+{
+    QTableWidgetItem * cell = new QTableWidgetItem(value);
+    table->setItem(row, col, cell);
+}
+
+double Perceptron::getError()
+{
+    int neironsCount = teachExamples.getNeironCount();
+    int n = teachExamples.getExamplesCount();
+     int num = 3;
+    double * norm = new double[neironsCount] ;
+    for (int i = 0; i < neironsCount; i++) {
+        norm[i] = 0;
+    }
+
+    for (int i = 0; i < teachExamples.getExamplesCount(); i++) {
+        double * exam = teachExamples.examples[i];
+        int neironPos = 0;
+        for (int k = 0; k < getNeironsNum().size(); k++) {
+            double value = getFunctionValue(k, exam);
+            double v = teachExamples.getExamples()[i][teachExamples.getEnterCount() + k];
+            norm[k] += (value - v) * (value - v);
+        }
+    }
+
+    double normE = 0;
+    for (int i = 0; i < neironsCount; i++) {
+        double e = norm[i];
+        normE += e;
+    }
+    normE = sqrt(normE/(neironsCount * n));
+    return normE;
 }
 
 double Perceptron::getFunctionValue(int neironNum, double *exam)
 {
-//    std::cout << std::endl << std::endl;
     Neiron * neiron = neirons[neironNum];
-//    for (int i = 0; i < teachExamples.getEnterCount(); i++) {
-//        std::cout<< exam[i] <<  std::endl;
-//    }
-//    std::cout << std::endl;
-//    neiron->showWeights();
     return neiron->calculateY(exam);
 }
 

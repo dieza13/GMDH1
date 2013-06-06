@@ -18,7 +18,7 @@ public:
     ~PerceptronContext();
 public:
     void addNewNet(Perceptron * perceptron, int neironNetType);
-    void teachNets();
+    void teachNets(QVBoxLayout * normalErrorPL);
     std::vector<int> getExamplesIntersect();
     FirstLayerNets * getFirstLayerNets();
     QGraphicsScene * getStructureVisualObj();
@@ -34,16 +34,17 @@ public:
     Perceptron * resultPerceptron;
 
 
-private:
+public:
 
 
     QMap<QString, int> neirons;
     QMap<QString, int> enters;
     Sample * resultSample;
-private:
+public:
     std::vector<int> getResultVectorIntersect(std::vector<int> v1, std::vector<int> v2);
     std::vector<int> getResultNeironNumUnion(std::vector<int> v1, std::vector<int> v2);
     Sample * setResultNet();
+    std::vector<double> optimizeAlpha(double startAlpha, double endAlpha, double step, int optimizeParam, int netNum);
 
 
     void setNeirons(QMap<QString, int> enters);

@@ -14,7 +14,8 @@ private:
     std::vector<int> twoVectorIntersect(std::vector<int> v1, std::vector<int> v2);
 
 public:
-    void teachNets(Sample * resultSample);
+    std::vector<double> teachNets(Sample * resultSample, QVBoxLayout *normalErrorPL);
+    void teachNets(Sample *resultSample);
     std::vector<int> getResultVectorIntersect(); //выбрать примеры, которые характерны каждой сети
     void setResultSample(Sample * sample);
     int getNetsCount();

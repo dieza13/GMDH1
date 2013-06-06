@@ -58,12 +58,15 @@ void NeiroSetDialog::on_pushButton_clicked()
         sample.setNeironsNum(neironsNum);
         std::vector<int> firstLayerExamsIntersect = perceptronContext->getExamplesIntersect();
         perceptronContext->getFirstLayerNets()->setResultSample(&sample);
-        std::vector<int> firstLayerNeironsNum;
-        fileReader->getSecondLayerExams(firstLayerExamsIntersect, firstLayerNeironsNum, columnNum, neironsNum, &sample);
-
+        fileReader->getSecondLayerExams(firstLayerExamsIntersect, columnNum, neironsNum, &sample);
     }
 
     newPerceptronNet = new Perceptron(sample, eraCount, alpha, velocity);
+    if (layerNum == 1) {
+        newPerceptronNet->teachExamples.entersName = enters.keys();
+        newPerceptronNet->teachExamples.neironsName = neirons.keys();
+    }
+
 
     perceptronContext->addNewNet(newPerceptronNet, layerNum);
     emit addNewNet();
@@ -148,17 +151,11 @@ void NeiroSetDialog::removeDataFromList(QAbstractItemView *listView)
             ((QTableWidget*)listView)->removeRow(t);
 
         }
-//        ((QTableWidget*)listView)->selectedItems().removeAll(l(((QTableWidget*)listView)->selectedItems());
     }
-//             ((QTableWidget*)listView)->row(
-//             ((QTableWidget*)listView)->selecremoveRow(selectRow(rem
-//        while (
-//        (QTableWidget*)listView)->selectedItems().size()
 
-//        for(int i = 0; i < ((QTableWidget*)listView)->selectedItems().size(); i++)
-//            QTableWidgetItem * item, ((QTableWidget*)listView)->selectedItems())
-//            delete item;
-
+    if (listView == enterListView) {
+        qDeleteAll(enterListView->selectedItems());
+    }
 }
 
 void NeiroSetDialog::on_toolButton_2_clicked()

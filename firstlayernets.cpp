@@ -11,8 +11,9 @@ FirstLayerNets::FirstLayerNets()
 
 
 
-void FirstLayerNets::teachNets(Sample *resultSample)
+std::vector<double> FirstLayerNets::teachNets(Sample *resultSample, QVBoxLayout * normalErrorPL)
 {
+    std::vector<double> netsErr;
     // свормировать лист с номерами примеров, которые будут подаваться на сеть второго звена
     std::vector<int> resultExamplesNum = getResultVectorIntersect();
 
@@ -36,9 +37,10 @@ void FirstLayerNets::teachNets(Sample *resultSample)
 
         for (int j = 0; j < Nets.size(); j++) {
             Perceptron * net = Nets[j];
+            double * exam = net->getExample(num);
             for (int k = 0; k < net->getNeironsNum().size(); k++) {
 
-                double value = net->getFunctionValue(k, num);
+                double value = net->getFunctionValue(k, exam);
 
 
                 if (net->teachExamples.neironsToNextLevel[k]) {
@@ -55,12 +57,52 @@ void FirstLayerNets::teachNets(Sample *resultSample)
         posInEnter = 0;
     }
 
+    int count = 0;
     for (int j = 0; j < Nets.size(); j++) {
         Perceptron * net = Nets[j];
-        net->calcError("net №" + QString::number(j + 1));
+
+        net->calcError("net №" + QString::number(j + 1), normalErrorPL, false, &netsErr, count);
+        count += net->teachExamples.neironCount;
         std::cout << std::endl;
     }
+    return netsErr;
 
+}
+
+void FirstLayerNets::teachNets(Sample *resultSample)
+{
+    // свормировать лист с номерами примеров, которые будут подаваться на сеть второго звена
+    std::vector<int> resultExamplesNum = getResultVectorIntersect();
+    // обучение сетей первого уровня, получение количества входов второго уровня
+    int neironsCount = 0;
+    for (int i = 0; i < Nets.size(); i++) {
+        Perceptron * net = Nets[i];
+        net->teachPerceptron(false);
+        neironsCount += net->getNeironsNum().size();
+    }
+////    показать веса нейронов i-ой сети
+//    showNeironsWeights(0);
+
+    for (int i = 0; i < resultSample->getExamplesCount(); i++ ) {
+        int num = resultSample->getExamplesNum()[i];
+        int posInEnter = 0;
+        int posInNeur = resultSample->enterCount;
+        for (int j = 0; j < Nets.size(); j++) {
+            Perceptron * net = Nets[j];
+            double * exam = net->getExample(num);
+            for (int k = 0; k < net->getNeironsNum().size(); k++) {
+                double value = net->getFunctionValue(k, exam);
+                if (net->teachExamples.neironsToNextLevel[k]) {
+                    resultSample->setEnter(i, posInEnter, value);
+                    posInEnter ++;
+                }  else {
+                    resultSample->setEnter(i, posInNeur, value);
+                }
+                posInNeur ++;
+            }
+        }
+        posInEnter = 0;
+    }
 }
 
 
@@ -116,10 +158,14 @@ void FirstLayerNets::setResultSample(Sample *sample)
          Perceptron * net = Nets[i];
          for (int j = 0; j < net->getNeironsNum().size(); j++) {
              int neironNum = net->getNeironsNum()[j];
+             QString neironName = net->teachExamples.neironsName[j];
+             std::cout << neironName.toStdString() << std::endl;
              if (net->teachExamples.neironsToNextLevel[j])
                  sample->entersNum.push_back(neironNum);
+                 sample->entersName.push_back(neironName);
              if (!neirons[neironNum]) {
                  sample->neironsNum.push_back(neironNum);
+                 sample->neironsName.push_back(neironName);
                  neirons[neironNum] = true;
 
                  if (net->teachExamples.neironsToNextLevel[j])
@@ -203,6 +249,9 @@ void FirstLayerNets::setResultSample(Sample *sample)
              results.push_back(value);
          }
      }
+
+
+
      return results;
  }
 

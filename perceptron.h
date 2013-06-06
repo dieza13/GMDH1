@@ -22,7 +22,12 @@ public:
     Sample * getExamples();
     void setPerceptronBody(QString name);
     PerceptronBody * getPerceptronBody();
-    void calcError(QString netName);
+    void calcError(QString netName, QVBoxLayout *normalErrorPL, bool isResult, std::vector<double> *allNetsError, int errorNum);
+    void setTable(int row, int col, double value, QTableWidget *table);
+    void setTable(int row, int col, QString value, QTableWidget * table);
+
+    double getError();
+
 
 
 public:
@@ -44,6 +49,8 @@ private:
     void teachingNeirons(bool isResult, double velocity);
     std::vector<double*> randomExamps();
     void generateResultNet();
+
+
 
 
 

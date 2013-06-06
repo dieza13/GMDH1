@@ -15,6 +15,14 @@ FileReader::FileReader()
     columnNum = 0;
 }
 
+FileReader::~FileReader()
+{
+    for (int i = 0; i < dataRows.size(); i++)
+        delete dataRows[i];
+    for (int i = 0; i < normalizeDataRows.size(); i++)
+        delete normalizeDataRows[i];
+}
+
 std::vector<QStringList> FileReader::getDataFromFile(QString string)
 {
     std::vector<QStringList> data;
@@ -130,7 +138,7 @@ void FileReader::normalizeData()
     }
 }
 
-void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<int> neironNums, std::vector<int> newEnters, std::vector<int> newNeirons, Sample * sample)
+void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<int> newEnters, std::vector<int> newNeirons, Sample * sample)
 {    
     std::vector<int> resultNeirons;
     std::vector<int> newExampleNums;
@@ -139,7 +147,7 @@ void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<i
     std::vector<double*> resultExams;
     std::vector<std::vector<double> > minMaxValueForColumn;
     std::vector<std::vector<double> > minMaxValueForEnters;
-    int examLen =sample->enterCount + newEnters.size() + sample->neironCount;
+    int examLen =sample->enterCount + sample->neironCount;
     for (int i = 0; i < exampleNums.size(); i++) {
 
         double * fullExam = dataRows[exampleNums[i]];
@@ -190,13 +198,14 @@ void FileReader::getSecondLayerExams(std::vector<int> exampleNums, std::vector<i
     for (int i = 0; i < sample->getExamplesCount(); i++) {
         double * example = sample->getExamples()[i];
         for (int j = 0; j < examLen; j++) {
+             printf("%4.5f ", example[j]);
 
-            if (j < examLen - sample->getEnterCount() )
-            /*std::cout << */printf("%4.5f ", example[j]) /*<< ' '*/;
-            else {
-                int t = j - sample->getEnterCount();
-                printf("%4.5f ", example[j] * (sample->getNeironMaxValue(t) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
-            }
+//            if (j < examLen - sample->getEnterCount() )
+//            /*std::cout << */printf("%4.5f ", example[j]) /*<< ' '*/;
+//            else {
+//                int t = j - sample->getEnterCount();
+//                printf("%4.5f ", example[j] * (sample->getNeironMaxValue(t) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
+//            }
         }
         std::cout << std::endl;
     }

@@ -13,10 +13,7 @@ PerceptronContext::~PerceptronContext()
 {
     delete firstLayerNets;
     delete resultPerceptron;
-//    for (int i = 0; i < firstTypeNets.size(); i++) delete firstTypeNets[i];
-//    for (int i = 0; i < secondTypeNets.size(); i++) delete secondTypeNets[i];
 
-//    delete resultSample;
 }
 
 void PerceptronContext::addNewNet(Perceptron * perceptron, int neironNetType)
@@ -33,74 +30,22 @@ void PerceptronContext::addNewNet(Perceptron * perceptron, int neironNetType)
     }
 }
 
-void PerceptronContext::teachNets()
+void PerceptronContext::teachNets(QVBoxLayout * normalErrorPL)
 {    
-    firstLayerNets->teachNets(resultPerceptron->getExamples());
-//    for (int i = 0; i < resultPerceptron->getExamplesNum().size(); i++) {
-//        double * exam = resultPerceptron->getExample(i);
-//        for (int j = 0; j < resultPerceptron->getExamples()->getEnterCount() + resultPerceptron->getExamples()->getNeironCount(); j++)
-//            std::cout << exam[j] << ' ';
-//        std::cout << std::endl;
-//    }
-
-    std::cout << "asdasd" << std::endl;
-
+    std::vector<double> netsErr = firstLayerNets->teachNets(resultPerceptron->getExamples(), normalErrorPL);
     resultPerceptron->teachPerceptron(true);
+
 
     Sample * sample = resultPerceptron->getExamples();
 
-    std::cout << "|||||||||||" << std::endl;
+//    std::cout << "|||||||||||" << std::endl;
 
     ////////////////////s
-//    int neironsCount = resultPerceptron->getNeironsNum().size();
-//    double * denorm = new double[neironsCount] ;
-//    double * norm = new double[neironsCount] ;
-//    for (int i = 0; i < neironsCount; i++) {
-//        denorm[i] = 0;
-//        norm[i] = 0;
-//    }
-    /////////////////////////////////f
-    resultPerceptron->calcError("result net");
 
-//    for (int i = 0; i < sample->getExamples().size(); i++) {
-//        double  exam[2];
-//        exam[0] = sample->getExamples()[i][2];
-//        exam[1] = sample->getExamples()[i][3];
-//        for (int j = 0; j < resultPerceptron->getNeironsNum().size(); j++) {
-//            calcError(denorm, norm, exam);
-//        }
-//        std::cout << std::endl;
-//    }
 
-//    ////////////////////////////s
-//    int n = resultPerceptron->getExamples()->getExamplesCount();
+    resultPerceptron->calcError("result net", normalErrorPL,true, &netsErr, 0);
 
-//    std::cout << "Ошибка по второй сети: ";
 
-//    QString errorD = "Denorm: ";
-//    QString errorN = "Norm: ";
-//    for (int i = 0; i < neironsCount; i++) {
-//        denorm[i] = sqrt(denorm[i] / n);
-//        errorD.append(QString::number(denorm[i]) + " ");
-//        norm[i] = sqrt(norm[i] / n);
-//        errorN.append(QString::number(norm[i]) + " ");
-
-//    }
-
-//    std::cout << errorD.toStdString() << errorN.toStdString() << " " << std::endl;
-    //////////////////////////////f
-
-//    for (int i = 0; i < sample->getExamplesNum().size(); i++) {
-//        double * exam = sample->getExamples()[i];
-//        for (int j = 0; j < (sample->getEnterCount() + sample->getNeironCount()); j++) {
-//            if (j < sample->getEnterCount())
-//            /*std::cout << */printf("%4.5f ", exam[j]) /*<< ' '*/;
-//            else
-//                printf("%4.5f ", exam[j] * (sample->getNeironMaxValue(j - sample->getEnterCount()) - sample->getNeironMinValue(j - sample->getEnterCount())) + sample->getNeironMinValue(j - sample->getEnterCount()));
-
-//        }
-////        std::cout << std::endl;
-//    }
 }
 
 
@@ -165,18 +110,33 @@ QMap<QString, double> PerceptronContext::getResults(QMap<int, double> example)
     int entersCount = resultPerceptron->getExamples()->getEnterCount();
     double * resultExample = new double[entersCount];
     int i = 0;
-    for (i = 0; i < entersCount - resultExam.size(); i++) {
-        int enterNum = resultPerceptron->getExamples()->getEntersNum()->at(i);
+
+    for (i = 0; i < resultExam.size(); i++) {
+        resultExample[i] = resultExam[i];
+    }
+
+    for (int j = 0; j < entersCount - resultExam.size(); j++) {
+        int enterNum = resultPerceptron->getExamples()->getEntersNum()->at(j);
         double value = example[enterNum];
-        resultExample[i] = resultPerceptron->getExamples()->normalizEnterValue(value, enterNum);
+        double v = resultPerceptron->getExamples()->normalizEnterValue(value, enterNum);
+        resultExample[j + i] = v;
     }
-    for (int j = 0; j < resultExam.size(); j++) {
-        resultExample[j + i] = resultExam[j];
+
+
+    for (int i = 0; i < entersCount; i++) {
+        std::cout << resultExample[i] << " ";
     }
+    std::cout << std::endl;
+
     QVector<double> resultValues;
     QMap<QString, double> denormalizResultValues;
     for (int i = 0; i < resultPerceptron->getNeironsNum().size(); i++) {
-        double value = resultPerceptron->getFunctionValue(i, resultExample);
+        double value;
+        if(resultPerceptron->teachExamples.neironsToNextLevel[i]) {
+            value = resultPerceptron->getFunctionValue(i, resultExample);
+        } else {
+            value = resultExam[i];
+        }
         resultValues.push_back(value);
         double maxVal = resultPerceptron->getExamples()->getNeironMaxValue(i);
         double minVal = resultPerceptron->getExamples()->getNeironMinValue(i);
@@ -191,9 +151,6 @@ QMap<QString, double> PerceptronContext::getResults(QMap<int, double> example)
                  neironName = iter.key();
 
         }
-
-
-//        std::cout << neironName.toStdString() << std::endl;
         denormalizResultValues.insert(neironName, denormValue);
     }
 
@@ -213,4 +170,48 @@ void PerceptronContext::addNeirons(QMap<QString, int> neirons)
 QList<QString> PerceptronContext::getNeironsName()
 {
     return neirons.keys();
+}
+
+std::vector<double> PerceptronContext::optimizeAlpha(double startAlpha, double endAlpha, double step, int optimizeParam, int netNum)
+{
+    Perceptron * net;
+    bool isResult = false;
+    if (netNum < firstLayerNets->Nets.size()) {
+        net = firstLayerNets->Nets[netNum];
+    } else {
+        isResult = true;
+        net = resultPerceptron;
+        firstLayerNets->teachNets(&(net->teachExamples));
+
+
+    }
+
+    std::vector<double> alphas;
+
+    for (int i = 0; i < net->neirons.size(); i++) {
+        Neiron * neiron = net->neirons[i];
+
+        double resultError = 0xffffffff;
+        double resultAlpha = startAlpha;
+
+        for (double alpha = startAlpha; alpha <= endAlpha; alpha += step) {
+            neiron->alpha = alpha;
+            double error = 0xffffffff;
+            for (int j = 0; j < optimizeParam; j++) {
+                net->teachPerceptron(isResult);
+
+                double e = net->getError();
+                if (e < error)
+                    error = e;
+            }
+            if (resultError > error) {
+                std::cout << std::endl << "new error:" << error << std::endl;
+                resultError = error;
+                resultAlpha = neiron->alpha;
+            }
+        }
+        neiron->alpha = resultAlpha;
+        alphas.push_back(resultAlpha);
+    }
+    return alphas;
 }

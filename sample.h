@@ -20,8 +20,8 @@ private:
 
     int exampleCount;    
 public:
-    QStringList entersName;
-    QStringList neironsName;
+    QList<QString> entersName;
+    QList<QString> neironsName;
 public:
     void setEntersNum(std::vector<int> entersNum);
     void setNeironsNum(std::vector<int> neironsNum, std::vector<bool> neironsToNextLevel);

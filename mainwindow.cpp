@@ -20,6 +20,9 @@
 #include <getexmpledialog.h>
 #include <QGraphicsItem>
 
+std::string PERCEPTRON_COMPLEX_NULL = "Полностью настройте перцептронный комплекс! (создайте хотя бы одну сеть первого уровня и результирующую сеть)";
+std::string FIRST_LAYER_NETS_SIZE_0 = "Создайте хотя бы одну сеть первого звена!";
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -27,7 +30,16 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     perceptronContext = new PerceptronContext();
     chgAllNetsLW = ui->chgAllNetsLW;
+    chgAllNetsLW_2 = ui->chgAllNetsLW_2;
     connect(chgAllNetsLW, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(showNetParam(QListWidgetItem *)));
+    normalErrorPageL = ui->normalErrorPageL_3;
+    enters = ui->Enters;
+    resultValues = ui->ResultValues;
+    QColor color();
+    ui->textBrowser->setTextColor(QColor( "red" ));
+    alphaParams = ui->alphaParamsTbl_2;
+    alphaTable = ui->alphaTbl;
+
 }
 
 MainWindow::~MainWindow()
@@ -39,13 +51,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
      fileReader = new FileReader();
-     std::vector<QStringList> dataList = fileReader->getDataFromFile(openFileDialog());
-     setData(dataList);
-
+     QString s = openFileDialog();
+     if (!s.isEmpty()) {
+         std::vector<QStringList> dataList = fileReader->getDataFromFile(s);
+         setData(dataList);
+     }
 }
-
-
-
 
 
 QString MainWindow::openFileDialog()
@@ -73,6 +84,7 @@ void MainWindow::setData(std::vector<QStringList> dataList)
 
 void MainWindow::on_pushButton_2_clicked()
 {
+    ui->textBrowser->clear();
     QStringList titleList;
     NeiroSetDialog * neiroDialog = new NeiroSetDialog();
 
@@ -89,7 +101,20 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_3_clicked()
 {
+    ui->textBrowser->clear();
+    chgAllNetsLW->clear();
+    chgAllNetsLW_2->clear();
+    clearLayout(normalErrorPageL);
+    for (int i = enters->rowCount() - 1; i >= 0; i--) {
+        enters->removeRow(i);
+    }
+
+    for (int i = resultValues->rowCount() - 1; i >= 0; i--) {
+        resultValues->removeRow(i);
+    }
+
     delete perceptronContext;
+    enters->setRowCount(0);
     perceptronContext = new PerceptronContext();
     delete ui->graphicsView->scene();
     perceptronContext->resultPerceptron = NULL;
@@ -97,8 +122,27 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    perceptronContext->teachNets();
+    ui->textBrowser->clear();
+    if (perceptronContext->firstLayerNets != NULL && perceptronContext->resultPerceptron != NULL) {
+        if (perceptronContext->firstLayerNets->getNetsCount() == 0) {
+            ui->textBrowser->setText(trUtf8(FIRST_LAYER_NETS_SIZE_0.c_str()));
+
+
+        } else {
+            clearLayout(normalErrorPageL);
+            perceptronContext->teachNets(normalErrorPageL);
+            setResultTable();
+        }
+
+    } else {
+        ui->textBrowser->setText(trUtf8(PERCEPTRON_COMPLEX_NULL.c_str()));
+    }
+
 }
+
+
+
+
 
 void MainWindow::on_pushButton_5_clicked()
 {
@@ -122,7 +166,7 @@ void MainWindow::on_pushButton_6_clicked()
         item->text().toDouble(&isNumeric);
         if (!isNumeric) {
             ui->textBrowser->setText("Введено не числовое значение. проверьте данные");
-            break;
+            return;
         }
     }
 
@@ -153,17 +197,15 @@ void MainWindow::on_pushButton_6_clicked()
 
 
 
-
 }
 
 void MainWindow::on_tabWidget_currentChanged(int index)
 {
     switch (index) {
-    case 2:
-        QTableWidget * resultTable = ui->Enters;
-        if (resultTable->rowCount() == 0)
-            setResultTable();
-        break;
+        case 2:
+            if (enters->rowCount() == 0)
+                setResultTable();
+            break;
     }
 
 
@@ -171,22 +213,20 @@ void MainWindow::on_tabWidget_currentChanged(int index)
 
 void MainWindow::setResultTable()
 {
-    QTableWidget * resultTable = ui->Enters;
     QList<QString> entersName = perceptronContext->getEntersName();
-    resultTable->setRowCount(entersName.size());
+    enters->setRowCount(entersName.size());
     int i = 0;
     foreach(QString name, entersName) {
         QTableWidgetItem * header = new QTableWidgetItem(name);
         header->setForeground(Qt::black);
         header->setBackground(QColor("lightblue"));
         header->setFont(QFont("arial", 12));
-        resultTable->setVerticalHeaderItem(i, header);
+        enters->setVerticalHeaderItem(i, header);
         i++;
     }
 
 
 
-    QTableWidget * resultValues = ui->ResultValues;
     QList<QString> neironsName = perceptronContext->getNeironsName();
     resultValues->setRowCount(neironsName.size());
     i = 0;
@@ -204,24 +244,74 @@ void MainWindow::setResultTable()
     header->setForeground(Qt::black);
     header->setBackground(QColor("lightblue"));
     header->setFont(QFont("arial", 12));
-    resultTable->setHorizontalHeaderItem(0, header);
-    resultValues->setHorizontalHeaderItem(0, header);
+    enters->setHorizontalHeaderItem(0, header);
+    QTableWidgetItem * header1 = new QTableWidgetItem("Значение");
+    header1->setForeground(Qt::black);
+    header1->setBackground(QColor("lightblue"));
+    header1->setFont(QFont("arial", 12));
+    resultValues->setHorizontalHeaderItem(0, header1);
 
 }
 
+void MainWindow::clearLayout(QLayout *layout, bool deleteWidgets)
+{
+    while (QLayoutItem* item = layout->takeAt(0))
+    {
+        if (deleteWidgets)
+        {
+            if (QWidget* widget = item->widget())
+                delete widget;
+        }
+        else if (QLayout* childLayout = item->layout())
+            clearLayout(childLayout, deleteWidgets);
+        delete item;
+    }
+}
 
+void MainWindow::addAlphaParamWidget(Perceptron * net)
+{
+    QList<QString> neironNames = net->teachExamples.neironsName;
 
+    alphaParams->clear();
+    alphaParams->setRowCount( net->neirons.size());
+    for (int i = 0; i < net->neirons.size(); i++) {
+        Neiron * neiron = net->neirons.at(i);
 
+        QDoubleSpinBox * spinBox = new QDoubleSpinBox();
+        spinBox->setValue(neiron->alpha);
+        alphaParams->setCellWidget(i, 1, spinBox);
 
+        QTableWidgetItem * item = new QTableWidgetItem(neironNames[i]);
+        alphaParams->setItem(i, 0, item);
+    }
+}
 
-void MainWindow::on_pushButton_7_clicked()
+void MainWindow::keyPressEvent(QKeyEvent *event)
 {
 
+
+    QString cbStr;
+    QClipboard *cb = QApplication::clipboard();
+    QModelIndexList list =  ui->tableWidget->selectionModel()->selectedIndexes();
+    int i, j, firstRow, lastRow, rowCount;
+
+   if( list.isEmpty() ) return;
+
+       firstRow = list.first().row();  lastRow = list.last().row();
+       rowCount = lastRow - firstRow + 1;
+
+     for(i = 0; i < rowCount; ++i, cbStr += '\n')
+      for(j = i; j < list.count(); j += rowCount, cbStr += '\t')
+        cbStr += ui->tableWidget->model()->data(list[ j ], Qt::EditRole).toString();
+
+     cb->setText(cbStr);
 }
+
 
 void MainWindow::setNetsList()
 {
     QListWidget * lw = ui->chgAllNetsLW;
+    QListWidget * lw2 = chgAllNetsLW_2;
     QStringList netsList;
     for (int i = 0; i < perceptronContext->firstLayerNets->getNetsCount(); i++) {
         netsList.append("Сеть " + QString::number(i + 1) + " первого слоя");
@@ -232,6 +322,8 @@ void MainWindow::setNetsList()
     }
     lw->clear();
     lw->addItems(netsList);
+    lw2->clear();
+    lw2->addItems(netsList);
 }
 
 void MainWindow::showNetParam(QListWidgetItem * item)
@@ -239,16 +331,10 @@ void MainWindow::showNetParam(QListWidgetItem * item)
     int row = chgAllNetsLW->row(item);
     Perceptron * net = ((row + 1) > perceptronContext->firstLayerNets->getNetsCount()) ? perceptronContext->resultPerceptron : perceptronContext->firstLayerNets->Nets[row];
 
-    ui->chgEraDSB->setValue(net->eraCount);
-    ui->chgVelosityDSB->setValue(net->velocity);
-    ui->chgSigmaPapamDSB->setValue(net->alpha);
-
-
-
-
-
-
-
+    addAlphaParamWidget(net);
+    changedNet = net;
+    ui->chgEraDSB_3->setValue(net->eraCount);
+    ui->chgVelosityDSB_3->setValue(net->velocity);
 
     std::cout << QString::number(row).toStdString() << std::endl;
 }
@@ -272,10 +358,88 @@ void MainWindow::on_chgNetBTN_clicked()
     }
 
     if (net != NULL) {
-        net->alpha = ui->chgSigmaPapamDSB->value();
-        net->velocity = ui->chgVelosityDSB->value();
-        net->eraCount = ui->chgEraDSB->value();
+        for(int i = 0; i < net->neirons.size(); i++) {
+            QDoubleSpinBox * doubleSpinBox(qobject_cast<QDoubleSpinBox*>(alphaParams->cellWidget(i, 1)));
+            double value = doubleSpinBox->value();
+
+            ((Neiron*)net->neirons[i])->alpha = value;
+        }
+
+        net->velocity = ui->chgVelosityDSB_3->value();
+        net->eraCount = ui->chgEraDSB_3->value();
+    }
+}
+
+
+
+void MainWindow::on_tableWidget_itemSelectionChanged()
+{
+    QString cbStr;
+    QClipboard *cb = QApplication::clipboard();
+    QModelIndexList list =  ui->tableWidget->selectionModel()->selectedIndexes();
+    int i, j, firstRow, lastRow, rowCount;
+    if( list.isEmpty() ) return;
+    firstRow = list.first().row();  lastRow = list.last().row();
+    rowCount = lastRow - firstRow + 1;
+    for(i = 0; i < rowCount; ++i, cbStr += '\n')
+        for(j = i; j < list.count(); j += rowCount, cbStr += '\t')
+            cbStr += ui->tableWidget->model()->data(list[ j ], Qt::EditRole).toString();
+    cb->setText(cbStr);
+}
+
+
+
+void MainWindow::on_pushButton_7_clicked()
+{
+    int row = chgAllNetsLW_2->row(chgAllNetsLW_2->selectedItems().at(0));
+    double startAlpha = ui->optStartDSB->value();
+    double endAlpha = ui->optEndDSB->value();
+    double stepAlpha = ui->optStepDSB->value();
+    double velocity = ui->optVelosityDSB->value();
+    int eraCount = ui->optEraSB->value();
+    int optimizeParam = ui->optParamSB->value();
+
+    Perceptron * net = (row < perceptronContext->firstLayerNets->Nets.size()) ? perceptronContext->firstLayerNets->Nets[row] : perceptronContext->resultPerceptron;
+    net->velocity = velocity;
+    net->eraCount = eraCount;
+
+    alphaTable->clear();
+    alphaTable->setRowCount(net->neirons.size());
+
+    for (int i = 0; i < net->neirons.size(); i++) {
+        QString neironName = net->teachExamples.neironsName[i];
+        alphaTable->setItem(i, 0, new QTableWidgetItem(neironName));
+    }
+    std::vector<double> alphas = perceptronContext->optimizeAlpha(startAlpha,endAlpha,stepAlpha,optimizeParam,row);
+    for (int i = 0; i < alphas.size(); i++) {
+        alphaTable->setItem(i, 1, new QTableWidgetItem(QString::number(alphas.at(i))));
+
     }
 
+
+}
+
+
+
+
+
+
+void MainWindow::on_chgNetBTN_2_clicked()
+{
+
+}
+
+void MainWindow::on_chgAllNetsLW_2_itemClicked(QListWidgetItem *item)
+{
+    int row = chgAllNetsLW_2->row(item);
+    Perceptron * net = ((row + 1) > perceptronContext->firstLayerNets->getNetsCount()) ? perceptronContext->resultPerceptron : perceptronContext->firstLayerNets->Nets[row];
+
+    optimizeNet = net;
+
+   /* ui->optEndDSB->setValue(1.5);
+    ui->optStartDSB->setValue(1.5)*/;
+    ui->optVelosityDSB->setValue(net->velocity);
+    ui->optEraSB->setValue(net->eraCount);
+    std::cout << QString::number(row).toStdString() << std::endl;
 
 }

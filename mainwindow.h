@@ -34,7 +34,6 @@ private slots:
 
     void on_tabWidget_currentChanged(int index);
 
-    void on_pushButton_7_clicked();
 
     void setNetsList();
 
@@ -42,21 +41,50 @@ private slots:
 
     void on_chgNetBTN_clicked();
 
+
+
+    void on_tableWidget_itemSelectionChanged();
+
+
+    void on_pushButton_7_clicked();
+
+
+
+
+
+
+    void on_chgNetBTN_2_clicked();
+
+    void on_chgAllNetsLW_2_itemClicked(QListWidgetItem *item);
+
 signals:
 
 
 
 private:
+    void clearLayout();
     Ui::MainWindow *ui;
     FileReader *  fileReader;
     PerceptronContext * perceptronContext;
+    QVBoxLayout * normalErrorPageL;
+    QVBoxLayout * denormalErrorPageL;
+    QTableWidget * enters;
+    QTableWidget * resultValues;
 private:
+    void keyPressEvent(QKeyEvent * event);
     void setData(std::vector<QStringList> dataList);
     void setResultTable();
+    void clearLayout(QLayout* layout, bool deleteWidgets = true);
+    void addAlphaParamWidget(Perceptron * net);
 public:
 
 public:
     QListWidget * chgAllNetsLW;
+    QListWidget * chgAllNetsLW_2;
+    QTableWidget * alphaParams;
+    Perceptron * changedNet;
+    Perceptron * optimizeNet;
+    QTableWidget * alphaTable;
 };
 
 #endif // MAINWINDOW_H

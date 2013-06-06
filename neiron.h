@@ -24,11 +24,14 @@ public:
     NeironBody * getNeironBody();
     void  iniWeight(); //инициализация весов случайными маленькими значениями
 
-private:
+
+public:
+    double * weight;// массив весов
     int enterCount;//количество входов
     double alpha;// параметр сигмоидальной функции
     double velocity;//скорость обучения
-    double * weight;// массив весов
+private:
+
     double maxVal;
     double minVal;
     int neironNum;

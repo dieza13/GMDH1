@@ -211,7 +211,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Сеть первого звена</string>
+     <string>Сеть первого уровня</string>
     </property>
     <property name="checked">
      <bool>true</bool>
@@ -222,12 +222,12 @@
      <rect>
       <x>110</x>
       <y>30</y>
-      <width>161</width>
+      <width>181</width>
       <height>22</height>
      </rect>
     </property>
     <property name="text">
-     <string>Сеть второго звена</string>
+     <string>Результирующая сеть</string>
     </property>
    </widget>
   </widget>
