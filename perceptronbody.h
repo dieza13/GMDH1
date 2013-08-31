@@ -11,7 +11,7 @@ class PerceptronBody : public  ItemBody
 public:
 
 public:
-    PerceptronBody(QString perceptronBodyText, QList<QGraphicsItem*> neirons, std::vector<int>  enters);
+    PerceptronBody(QString perceptronBodyText, std::vector<QGraphicsItem*> neirons, std::vector<int>  enters);
     ~PerceptronBody();
 
 //    void addNeironBody(NeironBody * neironBody);
@@ -22,7 +22,7 @@ private:
 
 private:
     bool pressed;
-    QList<QGraphicsItem*> neirons;
+    std::vector<QGraphicsItem*> neirons;
     int enterSize;
     int neironSize;
     std::vector<int>  enters;

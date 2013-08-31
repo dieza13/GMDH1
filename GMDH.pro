@@ -5,10 +5,13 @@
 #-------------------------------------------------
 
 QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widget
 
 TARGET = GMDH
 TEMPLATE = app
 
+CONFIG += qwt
+LIBS += -lqwt -lm
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -25,7 +28,8 @@ SOURCES += main.cpp\
     perceptron.cpp \
     perceptronbody.cpp \
     perceptroncontext.cpp \
-    sample.cpp
+    sample.cpp \
+    calculatedrange.cpp
 
 HEADERS  += mainwindow.h \
     body.h \
@@ -41,7 +45,9 @@ HEADERS  += mainwindow.h \
     perceptron.h \
     perceptronbody.h \
     perceptroncontext.h \
-    sample.h
+    sample.h \
+    EnterRange.h \
+    calculatedrange.h
 
 FORMS    += mainwindow.ui \
     neirosetdialog.ui \
@@ -49,3 +55,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     resources.qrc
+INCLUDEPATH += /usr/include/qwt
+LIBS += -L/usr/lib -lqwt

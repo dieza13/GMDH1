@@ -2,7 +2,7 @@
 
 
 
-LayerBody::LayerBody(QList<PerceptronBody *> perceptrons)
+LayerBody::LayerBody(std::vector<PerceptronBody *> perceptrons)
 {
     this->perceptrons = perceptrons;
     border = 40;

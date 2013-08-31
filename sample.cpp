@@ -22,7 +22,6 @@ void Sample::setExamples(std::vector<double*> examples)
 {
     this->examples = examples;
     exampleCount = examples.size();
-
 }
 
 void Sample::setExamplesNum(std::vector<int> examplesNum)
@@ -68,6 +67,16 @@ double Sample::getNeironMinValue(int i)
     return minMaxNeironsValue[i][0];
 }
 
+double Sample::getNeironNormMaxValue(int i)
+{
+    return minMaxNormNeironsValue[i][1];
+}
+
+double Sample::getNeironNormMinValue(int i)
+{
+    return minMaxNormNeironsValue[i][0];
+}
+
 double Sample::getNeironMaxValue(int i)
 {
     return minMaxNeironsValue[i][1];
@@ -92,6 +101,7 @@ void Sample::setEntersNum(std::vector<int> entersNum)
 {
     for (int i = 0; i < entersNum.size(); i++)
         this->entersNum.push_back(entersNum[i]);
+    enterCount = entersNum.size();
 }
 
 std::vector<int> *Sample::getEntersNum()
@@ -113,7 +123,6 @@ void Sample::setNeironsName(QList<QString> names)
 {
     neironsName = names;
 }
-
 QList<QString> *Sample::getNeironsName()
 {
     return &neironsName;
@@ -138,6 +147,19 @@ void Sample::setMinMaxEntersValue(std::vector<std::vector<double> > minMaxEnters
 {
     this->minMaxEntersValue.clear();
     this->minMaxEntersValue = minMaxEntersValue;
+}
+
+void Sample::setMinMaxNormNeironsValue(std::vector<std::vector<double> > minMaxNeironsValue)
+{
+    this->minMaxNormNeironsValue.clear();
+    this->minMaxNormNeironsValue = minMaxNeironsValue;
+
+}
+
+void Sample::setMinMaxNormEntersValue(std::vector<std::vector<double> > minMaxEntersValue)
+{
+    this->minMaxNormEntersValue.clear();
+    this->minMaxNormEntersValue = minMaxEntersValue;
 }
 
 

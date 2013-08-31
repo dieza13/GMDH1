@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>428</width>
+    <width>685</width>
     <height>597</height>
    </rect>
   </property>
@@ -28,8 +28,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>560</y>
+     <x>60</x>
+     <y>530</y>
      <width>97</width>
      <height>27</height>
     </rect>
@@ -38,164 +38,13 @@
     <string>Создать</string>
    </property>
   </widget>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>360</y>
-     <width>361</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>7</y>
-      <width>101</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="decimals">
-     <number>7</number>
-    </property>
-    <property name="minimum">
-     <double>0.000001000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.000001000000000</double>
-    </property>
-    <property name="value">
-     <double>0.700000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>10</y>
-      <width>151</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Скорость обучения</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="widget_2" native="true">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>400</y>
-     <width>361</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>7</y>
-      <width>101</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="decimals">
-     <number>7</number>
-    </property>
-    <property name="minimum">
-     <double>0.000001000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.000001000000000</double>
-    </property>
-    <property name="value">
-     <double>1.500000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>0</y>
-      <width>201</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>2</number>
-    </property>
-    <property name="text">
-     <string>Параметр сигмоид. функции</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="widget_4" native="true">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>440</y>
-     <width>361</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>201</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>2</number>
-    </property>
-    <property name="text">
-     <string>Количество эпох обучения</string>
-    </property>
-   </widget>
-   <widget class="QSpinBox" name="spinBox">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>8</y>
-      <width>101</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>1000000</number>
-    </property>
-    <property name="value">
-     <number>10000</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_5">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>0</y>
-      <width>121</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="lineWidth">
-     <number>2</number>
-    </property>
-    <property name="text">
-     <string>Количество эпох</string>
-    </property>
-   </widget>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>490</y>
-     <width>361</width>
-     <height>61</height>
+     <x>10</x>
+     <y>450</y>
+     <width>191</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="title">
@@ -204,8 +53,8 @@
    <widget class="QRadioButton" name="radioButton">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>10</y>
+      <x>0</x>
+      <y>20</y>
       <width>171</width>
       <height>22</height>
      </rect>
@@ -220,8 +69,8 @@
    <widget class="QRadioButton" name="radioButton_2">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>30</y>
+      <x>0</x>
+      <y>40</y>
       <width>181</width>
       <height>22</height>
      </rect>
@@ -248,7 +97,7 @@
    <property name="geometry">
     <rect>
      <x>250</x>
-     <y>180</y>
+     <y>230</y>
      <width>67</width>
      <height>17</height>
     </rect>
@@ -344,7 +193,7 @@
      <x>10</x>
      <y>30</y>
      <width>191</width>
-     <height>311</height>
+     <height>421</height>
     </rect>
    </property>
    <property name="editTriggers">
@@ -359,8 +208,8 @@
     <rect>
      <x>240</x>
      <y>30</y>
-     <width>171</width>
-     <height>141</height>
+     <width>431</width>
+     <height>201</height>
     </rect>
    </property>
    <property name="selectionMode">
@@ -370,33 +219,187 @@
     <number>0</number>
    </property>
   </widget>
-  <widget class="QListWidget" name="listWidget_3">
-   <property name="geometry">
-    <rect>
-     <x>490</x>
-     <y>210</y>
-     <width>171</width>
-     <height>141</height>
-    </rect>
-   </property>
-   <property name="selectionMode">
-    <enum>QAbstractItemView::ExtendedSelection</enum>
-   </property>
-  </widget>
   <widget class="QTableWidget" name="neirons">
    <property name="geometry">
     <rect>
      <x>240</x>
-     <y>210</y>
-     <width>171</width>
-     <height>141</height>
+     <y>250</y>
+     <width>431</width>
+     <height>201</height>
     </rect>
    </property>
    <property name="columnCount">
-    <number>2</number>
+    <number>4</number>
    </property>
    <column/>
    <column/>
+   <column/>
+   <column/>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>460</y>
+     <width>363</width>
+     <height>137</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>361</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>361</width>
+        <height>41</height>
+       </size>
+      </property>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>7</y>
+         <width>101</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>7</number>
+       </property>
+       <property name="minimum">
+        <double>0.000001000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.000001000000000</double>
+       </property>
+       <property name="value">
+        <double>0.700000000000000</double>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>50</x>
+         <y>10</y>
+         <width>151</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Скорость обучения</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>361</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>361</width>
+        <height>41</height>
+       </size>
+      </property>
+      <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>7</y>
+         <width>101</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="decimals">
+        <number>7</number>
+       </property>
+       <property name="minimum">
+        <double>0.000001000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.000001000000000</double>
+       </property>
+       <property name="value">
+        <double>1.500000000000000</double>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>0</y>
+         <width>201</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="text">
+        <string>Параметр сигмоид. функции</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_4" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>361</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>361</width>
+        <height>41</height>
+       </size>
+      </property>
+      <widget class="QSpinBox" name="spinBox">
+       <property name="geometry">
+        <rect>
+         <x>250</x>
+         <y>8</y>
+         <width>101</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="maximum">
+        <number>1000000</number>
+       </property>
+       <property name="value">
+        <number>10000</number>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>60</x>
+         <y>0</y>
+         <width>121</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="lineWidth">
+        <number>2</number>
+       </property>
+       <property name="text">
+        <string>Количество эпох</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources>

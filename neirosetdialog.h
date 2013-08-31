@@ -51,8 +51,9 @@ private:
 private:
     void addDataToList(QAbstractItemView * listView);
     void removeDataFromList(QAbstractItemView * listView);
-    void getColumns(std::vector<int> * columns, std::vector<int> * neironsNum, QMap<QString, int> *enters, QMap<QString, int> *neironTableView, std::vector<bool> * neironsToNextLevel);
-
+    void getColumns(std::vector<std::vector<double> > * minMaxNormNeironsValue, std::vector<int> * columns, std::vector<int> * neironsNum, QMap<QString, int> *enters, QMap<QString, int> *neironTableView, std::vector<bool> * neironsToNextLevel);
+    void setLists();
+    void setNeironsParam(int num);
 };
 
 #endif // NEIROSETDIALOG_H

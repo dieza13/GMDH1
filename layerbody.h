@@ -9,12 +9,12 @@ class LayerBody  : public  ItemBody
 {
 
 public:
-    LayerBody(QList<PerceptronBody*> perceptrons);
+    LayerBody(std::vector<PerceptronBody*> perceptrons);
     ~LayerBody();
 
 private:
     int border;
-    QList<PerceptronBody*> perceptrons;
+    std::vector<PerceptronBody*> perceptrons;
 
 private:
     void paint(QPainter * painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

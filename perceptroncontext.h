@@ -2,7 +2,6 @@
 #define PERCEPTRONCONTEXT_H
 #include "vector"
 #include "perceptron.h"
-#include "filereader.h"
 #include "sample.h"
 #include "netslayer.h"
 #include "firstlayernets.h"
@@ -10,6 +9,7 @@
 #include <QGraphicsItem>
 #include <QVector>
 #include <QMap>
+#include <EnterRange.h>
 
 class PerceptronContext
 {
@@ -19,7 +19,7 @@ public:
 public:
     void addNewNet(Perceptron * perceptron, int neironNetType);
     void teachNets(QVBoxLayout * normalErrorPL);
-    std::vector<int> getExamplesIntersect();
+    std::vector<int> getExamplesIntersect(std::vector<Sample> samples);
     FirstLayerNets * getFirstLayerNets();
     QGraphicsScene * getStructureVisualObj();
     QList<QString> getEntersName();
@@ -32,14 +32,9 @@ public:
 public:
     FirstLayerNets * firstLayerNets;
     Perceptron * resultPerceptron;
-
-
 public:
-
-
     QMap<QString, int> neirons;
     QMap<QString, int> enters;
-    Sample * resultSample;
 public:
     std::vector<int> getResultVectorIntersect(std::vector<int> v1, std::vector<int> v2);
     std::vector<int> getResultNeironNumUnion(std::vector<int> v1, std::vector<int> v2);
@@ -48,6 +43,7 @@ public:
 
 
     void setNeirons(QMap<QString, int> enters);
+    std::vector<std::vector<double> > calcRange(std::vector<EnterRange> range, std::vector<QString> *names, QLabel * rangePrBInfoLab, QProgressBar *saveRangePrB);
 
 };
 

@@ -14,15 +14,17 @@ private:
     std::vector<int> twoVectorIntersect(std::vector<int> v1, std::vector<int> v2);
 
 public:
-    std::vector<double> teachNets(Sample * resultSample, QVBoxLayout *normalErrorPL);
+    std::vector<std::vector<double> > teachNets(Sample * resultSample, QVBoxLayout *normalErrorPL);
     void teachNets(Sample *resultSample);
-    std::vector<int> getResultVectorIntersect(); //выбрать примеры, которые характерны каждой сети
+    std::vector<int> getResultVectorIntersect(std::vector<Sample> samples); //выбрать примеры, которые характерны каждой сети
     void setResultSample(Sample * sample);
     int getNetsCount();
     PerceptronBody * getNetVisualObj(int netNum);
     void setLayerBody();
     LayerBody * getLayerBody();
     QVector<double> calculateParams(QMap<int, double> example);
+    void setResultExamples(std::vector<Sample> *samples);
+
 };
 
 #endif // FIRSTLAYERNETS_H

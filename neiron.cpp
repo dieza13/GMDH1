@@ -20,7 +20,6 @@ Neiron::~Neiron()
 
 Neiron::Neiron(int enterCount, double velocity, double alpha, int neironNum)
 {
-
     this->enterCount = enterCount;
     this->velocity = velocity;
     this->alpha = alpha;    
@@ -83,10 +82,10 @@ void Neiron::setMinMaxFunkValue(double min, double max)
     this->minVal = min;
 }
 
-void Neiron::setNeironBody(int num)
+void Neiron::setMinMaxNormValue(double min, double max)
 {
-
-
+    this->normDownLim = min;
+    this->normUpLim = max;
 }
 
 int Neiron::getNeironNum()

@@ -2,7 +2,7 @@
 #include <iostream>
 
 
-PerceptronBody::PerceptronBody(QString perceptronBodyText, QList<QGraphicsItem*> neirons, std::vector<int> enters)
+PerceptronBody::PerceptronBody(QString perceptronBodyText, std::vector<QGraphicsItem*> neirons, std::vector<int> enters)
 {
     this->enters = enters; //
     enterSize = 30;

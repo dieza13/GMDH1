@@ -15,6 +15,7 @@ public:
     double getAlpha();
     double calculateY(double * X);
     void setMinMaxFunkValue(double min, double max);
+    void setMinMaxNormValue(double min, double max);
     double calculateWeights(double *X, int yNum); //пересчитать веса
     void setNeironBody(int num);
     int getNeironNum();
@@ -30,12 +31,14 @@ public:
     int enterCount;//количество входов
     double alpha;// параметр сигмоидальной функции
     double velocity;//скорость обучения
-private:
-
     double maxVal;
     double minVal;
-    int neironNum;
-    QLabel neironTitle;
+    double normUpLim = 1; // верхняя граница нормализации
+    double normDownLim = 0; // нижняя граница нормализации
+    int neironNum;    
+private:
+
+
     NeironBody * neironBody;
 private:        
 

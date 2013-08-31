@@ -11,13 +11,7 @@ class Sample
 public:
     Sample();
 private:
-
-
     std::vector<int> examplesNum;
-
-    std::vector<std::vector<double> > minMaxNeironsValue;
-    std::vector<std::vector<double> > minMaxEntersValue;
-
     int exampleCount;    
 public:
     QList<QString> entersName;
@@ -36,8 +30,12 @@ public:
     int getEnterCount();
     void setMinMaxNeironsValue(std::vector<std::vector<double> > minMaxNeironsValue);
     void setMinMaxEntersValue(std::vector<std::vector<double> > minMaxEntersValue);
+    void setMinMaxNormNeironsValue(std::vector<std::vector<double> > minMaxNeironsValue);
+    void setMinMaxNormEntersValue(std::vector<std::vector<double> > minMaxEntersValue);
     double getNeironMaxValue(int i);
     double getNeironMinValue(int i);
+    double getNeironNormMaxValue(int i);
+    double getNeironNormMinValue(int i);
     int getExamplesCount();
     int getNeironCount();
     void setEnter(int row, int col, double value);
@@ -53,10 +51,12 @@ public:
     std::vector<int> entersNum;
     std::vector<int> neironsNum;
     std::vector<bool> neironsToNextLevel;
-
-
-
-
+    std::vector<std::vector<double> > minMaxNeironsValue;
+    std::vector<std::vector<double> > minMaxEntersValue;
+    std::vector<std::vector<double> > minMaxNormNeironsValue;
+    std::vector<std::vector<double> > minMaxNormEntersValue;
+    std::vector<bool> getNeironsToNextLevel() const;
+    void setNeironsToNextLevel(const std::vector<bool> &value);
 };
 
 #endif // SAMPLE_H

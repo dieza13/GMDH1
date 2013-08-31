@@ -22,11 +22,14 @@ public:
     Sample * getExamples();
     void setPerceptronBody(QString name);
     PerceptronBody * getPerceptronBody();
-    void calcError(QString netName, QVBoxLayout *normalErrorPL, bool isResult, std::vector<double> *allNetsError, int errorNum);
+    void calcError(QString netName, QVBoxLayout *normalErrorPL, bool isResult, std::vector<std::vector<double> > *allNetsError, int errorNum, Sample examples);
+    void calcNormDenorm(double * norm, double * denorm, int neironNum, Sample *examples, int exampleNum, double *deNorm, double *value);
     void setTable(int row, int col, double value, QTableWidget *table);
     void setTable(int row, int col, QString value, QTableWidget * table);
+    double denormValue(Sample * examples, int valueNum, double value);
 
     double getError();
+    void showErrors(double d, double e, QString *errorD, QString *errorN, int n, int i, QTableWidget *normalErrorT);
 
 
 
